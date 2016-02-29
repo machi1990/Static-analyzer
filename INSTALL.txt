@@ -1,0 +1,35 @@
+Disque virtuel TAS-Project-2015-2016
+Ubuntu 64-bit
+login: tas
+password: tas
+
+
+Dépendances:
+- OCaml: https://ocaml.org/index.fr.html
+- Menhir: http://gallium.inria.fr/~fpottier/menhir
+- Zarith: https://forge.ocamlcore.org/projects/zarith
+- CamlIDL: https://forge.ocamlcore.org/projects/camlidl
+- GMP: https://gmplib.org
+- MPFR: http://www.mpfr.org
+- Apron: http://apron.cri.ensmp.fr/library
+
+
+Installation sous Ubuntu.
+quelques paquets à installer par apt-get
+le reste est installé par opam
+
+  sudo apt-get install m4 libgmp3dev libmpfr-dev ocaml ocaml-native-compilers ocaml-findlib opam
+  opam init
+  opam config env
+  opam install menhir zarith mlgmpidl opam
+
+
+Si l'installation d'Apron avec opam échoue,
+il est possible de l'installer à la main par :
+
+  svn co svn://scm.gforge.inria.fr/svnroot/apron/apron/trunk apron
+  cd apron
+  ./configure -no-ppl -prefix /usr
+  make
+  sudo make install
+
