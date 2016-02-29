@@ -85,7 +85,7 @@ module Concrete = (struct
         and s2 = eval_expr e2 m in
         (* update s2 to avoid a division by zero! *)
         let s2 =
-          if op = AST_DIVIDE then ValSet.remove Z.zero s2
+          if op = AST_DIVIDE || op = AST_MODULO then ValSet.remove Z.zero s2
           else s2
         in
         (* then, apply the operation to each pair of elements *)
@@ -95,6 +95,7 @@ module Concrete = (struct
           | AST_MINUS -> Z.sub
           | AST_MULTIPLY -> Z.mul
           | AST_DIVIDE -> Z.div
+					| AST_MODULO -> Z.erem
           )
           s1
           s2

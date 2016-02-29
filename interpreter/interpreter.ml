@@ -171,25 +171,9 @@ module Interprete(D : DOMAIN) =
         filter inv e false
 
     | AST_assert (e,p) ->
-        (* not implemented *)
-        (* to be sound, we return the argument unchanged *)
-				let rec eval a (e,x) = match e with
-            (* boolean part, handled recursively *)
-            | AST_bool_unary (AST_NOT, e) -> 
-                not (eval a e)
-            | AST_bool_binary (AST_AND, e1, e2) ->
-                (eval a e1) && (eval a e2)
-            | AST_bool_binary (AST_OR, e1, e2) -> 
-                (eval a e1) || (eval a e2)
-            | AST_bool_const b ->
-                b
-                  
-            (* arithmetic comparison part, handled by D *)
-            | AST_compare (cmp, (e1,_), (e2,_)) ->
-           	let cmp_res = D.compare a e1 cmp e2 in not (D.is_bottom(cmp_res)) in 
-						let result = eval a (e,p) in 
-						if (not result) then (error p "Assert error");
-						a
+				let filtered = filter a (e,p) false in 
+				if D.is_bottom filtered then (error p "Assert error");
+				filter a (e,p) true
     | AST_print l ->
         (* print the current abstract environment *)
         let l' = List.map fst l in

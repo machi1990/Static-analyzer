@@ -84,6 +84,7 @@ rule token = parse
 | ";"    { TOK_SEMICOLON }
 | ","    { TOK_COMMA }
 | "="    { TOK_EQUAL }
+| "%"    { TOK_MODULO }
 
 (* literals *)
 | const_int    as c { TOK_int c }

@@ -56,6 +56,7 @@ type int_binary_op =
   | AST_MINUS         (* e - e *)
   | AST_MULTIPLY      (* e * e *)
   | AST_DIVIDE        (* e / e *)
+	| AST_MODULO        (* e % e *)
 
 type compare_op =
   | AST_EQUAL         (* e == e *)

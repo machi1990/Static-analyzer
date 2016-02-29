@@ -48,6 +48,7 @@ let string_of_int_binary_op = function
   | AST_DIVIDE -> "/"
   | AST_PLUS -> "+"
   | AST_MINUS -> "-"
+	| AST_MODULO -> "%"
 
 let string_of_compare_op = function 
   | AST_EQUAL -> "=="

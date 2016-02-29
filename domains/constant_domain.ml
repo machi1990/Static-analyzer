@@ -76,6 +76,8 @@ module Constants = (struct
 
   let mul = lift2 Z.mul
 
+  let modulo = lift2 Z.erem
+	
   let div a b =
     if b = Cst Z.zero then BOT
     else lift2 Z.div a b
@@ -142,6 +144,7 @@ module Constants = (struct
   | AST_MINUS    -> sub x y
   | AST_MULTIPLY -> mul x y
   | AST_DIVIDE   -> div x y
+	| AST_MODULO   -> modulo x y
 
   let compare x y op = match op with
   | AST_EQUAL         -> eq x y
@@ -177,7 +180,10 @@ module Constants = (struct
   | AST_DIVIDE ->
       (* this is sound, but not precise *)
       x, y
-        
+	
+	| AST_MODULO ->
+      x, y
+					      
       
 end : VALUE_DOMAIN)
 

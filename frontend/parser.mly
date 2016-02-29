@@ -39,6 +39,7 @@ open Abstract_syntax_tree
 %token TOK_MINUS
 %token TOK_EXCLAIM
 %token TOK_DIVIDE
+%token TOK_MODULO
 %token TOK_LESS
 %token TOK_GREATER
 %token TOK_LESS_EQUAL
@@ -98,6 +99,8 @@ file: t=list(ext(stat)) TOK_EOF { t }
 | TOK_DIVIDE         { AST_DIVIDE }
 | TOK_PLUS           { AST_PLUS }
 | TOK_MINUS          { AST_MINUS }
+| TOK_MODULO         { AST_MODULO }
+
 
 // comparison operators    
 %inline compare_op:
