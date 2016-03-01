@@ -76,7 +76,9 @@ module Constants = (struct
 
   let mul = lift2 Z.mul
 
-  let modulo = lift2 Z.erem
+  let modulo a b =  
+		if b = Cst Z.zero then BOT 
+		else lift2 Z.erem a b
 	
   let div a b =
     if b = Cst Z.zero then BOT
