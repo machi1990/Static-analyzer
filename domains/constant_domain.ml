@@ -194,11 +194,11 @@ module Constants = (struct
       (if contains_zero x && contains_zero r then y else meet y (div r x))
         
   | AST_DIVIDE ->
-      (* this is sound, but not precise *)
-      x, y
+      (* this is sound, but not precise TODO *)
+			if (is_bottom r ) then x,Cst Z.zero else x,y
 	
 	| AST_MODULO ->
-      x, y
+      if (is_bottom r ) then x,Cst Z.zero else x,y
 					      
       
 end : VALUE_DOMAIN)
