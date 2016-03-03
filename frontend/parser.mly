@@ -62,7 +62,7 @@ open Abstract_syntax_tree
 %left TOK_AND_AND
 %left TOK_EXCLAIM
 %left TOK_PLUS TOK_MINUS
-%left TOK_STAR TOK_DIVIDE TOK_PERCENT
+%left TOK_STAR TOK_DIVIDE TOK_MODULO
 
 
 /* entry-point */
