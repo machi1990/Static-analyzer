@@ -172,7 +172,7 @@ module Interprete(D : DOMAIN) =
 
     | AST_assert (e,p) ->
 				let filtered = filter a (e,p) false in 
-				if D.is_bottom filtered then (error p "Assert error");
+				if not (D.is_bottom filtered) then (error p "Assert error");
 				filter a (e,p) true
     | AST_print l ->
         (* print the current abstract environment *)
