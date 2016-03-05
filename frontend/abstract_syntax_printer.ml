@@ -1,7 +1,8 @@
 (*
   Cours "Typage et Analyse Statique"
   Université Pierre et Marie Curie
-  Antoine Miné 2015
+  Author: Manyanda Chitimbo �2016
+  Original author: Antoine Miné 2015
 *)
 
 (* 

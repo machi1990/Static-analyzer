@@ -78,6 +78,7 @@ MLFILES = \
   domains/concrete_domain.ml \
   domains/constant_domain.ml \
   domains/non_relational_domain.ml \
+  domains/interval_domain.ml \
   interpreter/interpreter.ml \
   main.ml
 
