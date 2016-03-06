@@ -138,13 +138,7 @@ module Intervals = (struct
 					and head2 =	Q.add a (Q.sub d r2)
 					in let res2 = (if Q.geq b head then Interval(Q.zero,(Q.sub c Q.one)) else res) 
 					and res3 = (if Q.geq b head2 then Interval(Q.zero,(Q.sub d Q.one)) else res) in 
-					match res,res2,res3 with
-					| Interval(e,f),Interval(g,h),Interval(i,j) -> (
-							let min__ = Q.min e (Q.min g i)
-							and max__ = Q.max f (Q.max h j)	
-							in Interval(min__,max__)
-						)
-					| _ -> BOT			
+					join res (join res2 res3)		
 			)
 		| _ -> BOT
 
