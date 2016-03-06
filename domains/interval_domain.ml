@@ -82,10 +82,10 @@ module Intervals = (struct
 
 	let make_mul a b c d = 
 		let r1 = Q.mul a c and r2 = Q.mul a d 
-				and r3 = Q.mul b c and r4 = Q.mul b d 
-				in let min_ = Q.min (Q.min r1 r2) (Q.min r3 r4) 
-				and max_ = Q.max (Q.max r1 r2) (Q.max r3 r4) 
-				in Interval(min_,max_)
+		and r3 = Q.mul b c and r4 = Q.mul b d 
+		in let min_ = Q.min (Q.min r1 r2) (Q.min r3 r4) 
+		and max_ = Q.max (Q.max r1 r2) (Q.max r3 r4) 
+		in Interval(min_,max_)
 	 
   let mul i i1 = 
 		match i,i1 with
@@ -116,7 +116,6 @@ module Intervals = (struct
 			)
 	 	| _ -> BOT
 			
-	(* TODO *)								
 	let erem a b = 
 		if not (Q.is_real a) then a 
 		else (
@@ -125,25 +124,32 @@ module Intervals = (struct
 				make_q (Z.erem (Q.to_bigint a) (Q.to_bigint b)) 
 			)
 			
-	(* TODO *)
-	let make_mod i i1 = 
-		match i,i1 with
-		| Interval(a,b), Interval(c,d) ->
-		if c == Q.zero || d == Q.zero then BOT
-		else (
-			let r1 = Q.min (erem a c) (erem a d) and 
-				r2 = Q.max (erem b c) (erem d b) and
-				r3 = Q.min (erem b c) (erem b d) and 
-				r4 = Q.max (erem a c) (erem a d) in
-				if (Q.geq c Q.one) then Interval(r1,r2) 
-				else (
-					if (Q.geq Q.minus_one d) then Interval (r3,r4)
-					else BOT 
-					)
+	(* Determines interval after the modulo operation. TODO test and improves this*)	
+	let make_mod i i2 = 
+		match i,i2 with
+		| Interval(a,b), Interval(c,d) -> 
+			let r1 = erem a c and r2 = erem a d 
+			and r3 = erem b c and r4 = erem b d 
+			in let min_ = Q.min (Q.min r1 r2) (Q.min r3 r4) 
+			and max_ = Q.max (Q.max r1 r2) (Q.max r3 r4) 
+			in (
+					let res = Interval(min_,max_) 
+					and head = Q.add a (Q.sub c r1) 
+					and head2 =	Q.add a (Q.sub d r2)
+					in let res2 = (if Q.geq b head then Interval(Q.zero,(Q.sub c Q.one)) else res) 
+					and res3 = (if Q.geq b head2 then Interval(Q.zero,(Q.sub d Q.one)) else res) in 
+					match res,res2,res3 with
+					| Interval(e,f),Interval(g,h),Interval(i,j) -> (
+							let min__ = Q.min e (Q.min g i)
+							and max__ = Q.max f (Q.max h j)	
+							in Interval(min__,max__)
+						)
+					| _ -> BOT			
 			)
-	| _ -> BOT
-				
-	(* TODO *)
+		| _ -> BOT
+
+					 					
+	(* TODO see make_mod*)
   let modulo i i1 =  
 		match i,i1 with
 		| Interval(a,b), Interval(c,d) -> (
