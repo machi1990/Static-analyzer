@@ -158,29 +158,29 @@ module Intervals = (struct
   let widen = join
 
 
-  (* comparison operations (filters) *)
+  (* comparison operations (filters) TODO*)
   let eq a b =
     match a,b with
 		| Interval (x,x1), Interval (y,y1) -> if Q.equal x y && Q.equal x1 y1 then a,b else BOT,BOT
-		| BOT,x | x,BOT -> a,BOT
+		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
 
   let neq a b =
     match a,b with
-		| Interval (x,x1), Interval (y,y1) -> if not(Q.equal x y) &&  not(Q.equal x1 y1) then a,b else BOT,BOT
-		| BOT,x | x,BOT -> a,BOT
+		| Interval (x,x1), Interval (y,y1) -> if not(Q.equal x y) ||  not(Q.equal x1 y1) then a,b else BOT,BOT
+		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
       
   let geq a b =
     match a,b with
 		| Interval (x,x1), Interval (y,y1) -> if Q.geq (Q.sub x1 x) (Q.sub y1 y) then a,b else BOT,BOT
-		| BOT,x | x,BOT -> a,BOT
+		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
       
   let gt a b =
     match a,b with
 		| Interval (x,x1), Interval (y,y1) -> if Q.gt (Q.sub x1 x) (Q.sub y1 y) then a,b else BOT,BOT
-		| BOT,x | x,BOT -> a,BOT
+		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
 
 
