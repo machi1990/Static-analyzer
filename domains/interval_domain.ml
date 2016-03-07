@@ -154,10 +154,29 @@ module Intervals = (struct
 		| _ -> BOT
 	
 
-  (* no need for a widening as the domain has finite height; we use the join *)
-  let widen = join
+	let compare_wide  x y is_min = if Q.gt y x then x else if is_min then Q.minus_inf else Q.inf
+	
+  let widen i i1 = 
+		match i,i1 with
+		| Interval(a,b), Interval(c,d) -> 
+			let min_ = compare_wide a c true 
+			and max_ = compare_wide a c false 
+			in Interval(min_,max_)
+		| BOT,x | x,BOT -> x
+		| TOP,x | x,TOP -> TOP
 
 
+  (* subset inclusion of concretizations *)
+  let subset i i1 = match i,i1 with
+  | BOT,_ | _,TOP -> true
+  | Interval (a,b), Interval (c,d) -> Q.geq a c && Q.geq d b
+  | _ -> false
+
+
+  (* check the emptyness of the concretization *)
+  let is_bottom a =
+    a=BOT
+		
   (* comparison operations (filters) TODO*)
   let eq a b =
     match a,b with
@@ -171,11 +190,7 @@ module Intervals = (struct
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
       
-  let geq a b =
-    match a,b with
-		| Interval (x,x1), Interval (y,y1) -> if Q.geq (Q.sub x1 x) (Q.sub y1 y) then a,b else BOT,BOT
-		| BOT,x | x,BOT -> x,BOT
-		| _ -> a,b
+  let geq a b = if subset a b then a,b else BOT,BOT
       
   let gt a b =
     match a,b with
@@ -183,16 +198,6 @@ module Intervals = (struct
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
 
-
-  (* subset inclusion of concretizations *)
-  let subset i i1 = match i,i1 with
-  | BOT,_ | _,TOP -> true
-  | Interval (a,b), Interval (c,d) -> Q.geq a c && not (Q.gt d b)
-  | _ -> false
-
-  (* check the emptyness of the concretization *)
-  let is_bottom a =
-    a=BOT
 
   (* prints abstract element *)
   let print fmt x = match x with
