@@ -152,15 +152,12 @@ module Intervals = (struct
 			in join (make_mod i first) (make_mod i second)
 			)
 		| _ -> BOT
-	
-
-	let compare_wide  x y is_min = if Q.gt y x then x else if is_min then Q.minus_inf else Q.inf
-	
+		
   let widen i i1 = 
 		match i,i1 with
 		| Interval(a,b), Interval(c,d) -> 
-			let min_ = compare_wide a c true 
-			and max_ = compare_wide a c false 
+			let min_ = if Q.gt c a then a else Q.minus_inf
+			and max_ = if Q.geq b d then b else Q.inf
 			in Interval(min_,max_)
 		| BOT,x | x,BOT -> x
 		| TOP,x | x,TOP -> TOP
@@ -176,6 +173,7 @@ module Intervals = (struct
   let is_bottom a =
     a=BOT
 		
+	(* TODO *)	
   let eq a b =
     match a,b with
 		| Interval (x,x1), Interval (y,y1) -> if Q.equal x y && Q.equal x1 y1 then a,b else BOT,BOT
