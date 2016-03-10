@@ -174,27 +174,22 @@ module Intervals = (struct
     a=BOT
 		
 	(* TODO *)	
-  let eq a b =
-    match a,b with
-		| Interval (x,x1), Interval (y,y1) -> if Q.equal x y && Q.equal x1 y1 then a,b else BOT,BOT
-		| BOT,x | x,BOT -> x,BOT
-		| _ -> a,b
+  let eq a b = if subset a b || subset b a then a,b else BOT,BOT
 
   let neq a b =
     match a,b with
 		| Interval (x,x1), Interval (y,y1) -> if not(Q.equal x y) ||  not(Q.equal x1 y1) then a,b else BOT,BOT
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
-    
-	(* TODO *)		  
+    	  
   let geq a b = match a,b with
-		| Interval (x,x1), Interval (y,y1) ->  if subset a b then a,b else BOT,BOT
+		| Interval (x,x1), Interval (y,y1) ->  if (Q.geq x1 y) then a,b else BOT,BOT
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
       
   let gt a b =
     match a,b with
-		| Interval (x,x1), Interval (y,y1) ->  if subset a b then a,b else BOT,BOT
+		| Interval (x,x1), Interval (y,y1) -> if (Q.gt x1 y) then a,b else BOT,BOT
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
 
