@@ -200,14 +200,26 @@ module NonRelational(V : VALUE_DOMAIN) = (struct
                r
              ) m n)
       with Empty -> BOT
-
+	
+	 let narrow a b = match a,b with
+  | BOT,x | x,BOT -> x
+  | Val m, Val n ->
+      try Val
+          (VarMap.map2z
+             (fun _ x y ->
+               let r = V.narrow x y in
+               if V.is_bottom r then raise Empty;
+               r
+             ) m n)
+      with Empty -> BOT
+							
   (* widening, similar to join *)
   let widen a b = match a,b with
   | BOT,x | x,BOT -> x
   | Val m, Val n ->
       Val (VarMap.map2z (fun _ x y -> V.widen x y) m n)
 
-
+	
   (* check inclusion *)
   let subset a b = match a,b with
   | BOT,_ -> true

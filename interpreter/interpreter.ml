@@ -25,10 +25,10 @@ open Domain
 let trace = ref false
 
 (* widening delay *)
-let widen_delay = ref 3
+let widen_delay = ref 0
 
 (* loop unrolling *)
-let loop_unrolling = ref 3
+let loop_unrolling = ref 0
 
 
 
@@ -165,11 +165,20 @@ module Interprete(D : DOMAIN) =
            F(X(n+1)) = X(0) U body(F(X(n)
            we apply the loop body and add back the initial abstract state
          *)        
-        let f x = D.join a (eval_stat (filter x e true) s) in
+       (* TODO add loop_unrolling *)
+				
+				let f x = if !loop_unrolling = 0 then (if !widen_delay = 0 then 
+					D.widen a (eval_stat (filter x e true) s) 
+					else (
+						widen_delay := !widen_delay - 1;
+						D.join a (eval_stat (filter x e true) s)
+					)) else (
+						loop_unrolling := !loop_unrolling - 1;
+						D.meet a (eval_stat (filter x e true) s)
+						) in 
         (* compute fixpoint from the initial state (i.e., a loop invariant) *)
-        let inv = fix f a in
-        (* and then filter by exit condition *)
-        filter inv e false
+         let inv = fix f a in 
+					filter inv e false
 
     | AST_assert (e,p) ->
 				let filtered = filter a (e,p) false in 
@@ -201,7 +210,7 @@ module Interprete(D : DOMAIN) =
     (* simply analyze each statement in the program *)
     let _ = List.fold_left eval_stat (D.init()) l in
     (* nothing useful to return *)
-    ()
+	  ()
 
       
 end : INTERPRETER)

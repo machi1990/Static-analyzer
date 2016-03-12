@@ -46,6 +46,9 @@ module type DOMAIN =
     (* widening *)
     val widen: t -> t -> t
 
+		(* widening *)
+    val narrow: t -> t -> t
+
     (* whether an abstract element is included in another one *)
     val subset: t -> t -> bool
 

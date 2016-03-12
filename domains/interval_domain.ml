@@ -162,6 +162,15 @@ module Intervals = (struct
 		| BOT,x | x,BOT -> x
 		| TOP,x | x,TOP -> TOP
 
+	(* TODO refine this and add it to interpreter.*)
+	let narrow i i1 = 
+		match i,i1 with
+		| Interval(a,b), Interval(c,d) -> 
+			let min_ = if Q.equal a Q.minus_inf then c else a
+			and max_ = if Q.equal b Q.inf then d else b
+			in Interval(min_,max_)
+		| BOT,x | x,BOT -> x
+		| TOP,x | x,TOP -> TOP 
 
   (* subset inclusion of concretizations *)
   let subset i i1 = match i,i1 with

@@ -30,6 +30,7 @@ let doit filename =
 let eval_prog prog =
   Abstract_syntax_printer.print_prog Format.std_formatter prog
 
+
 (* entry point *)
 let main () =
   let action = ref eval_prog in
@@ -41,6 +42,8 @@ let main () =
      "-concrete", Arg.Unit (fun () -> action := ConcreteAnalysis.eval_prog),"";
      "-constant", Arg.Unit (fun () -> action := ConstantAnalysis.eval_prog),"";
 		 "-interval", Arg.Unit (fun () -> action := IntervalAnalysis.eval_prog),"";
+		 "-delay", Arg.Int (fun n -> if n > !Interpreter.widen_delay then Interpreter.widen_delay := n),"";
+		 "-unroll", Arg.Int (fun n -> if n > !Interpreter.loop_unrolling then Interpreter.loop_unrolling := n),"";
    ]
     (* handle filenames *)
     (fun filename -> files := (!files)@[filename])

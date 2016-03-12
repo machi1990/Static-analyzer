@@ -34,7 +34,9 @@ module type VALUE_DOMAIN =
     (* set-theoretic operations *)
     val join: t -> t -> t
     val meet: t -> t -> t
-        
+    
+		val narrow: t -> t -> t
+    		    
     (* subset inclusion *)
     val subset: t -> t -> bool
         

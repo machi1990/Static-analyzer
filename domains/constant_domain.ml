@@ -103,6 +103,9 @@ module Constants = (struct
 
   (* no need for a widening as the domain has finite height; we use the join *)
   let widen = join
+	
+	(* no need for a widening as the domain has finite height; we use the join *)
+  let narrow = meet
 
 
   (* comparison operations (filters) *)
