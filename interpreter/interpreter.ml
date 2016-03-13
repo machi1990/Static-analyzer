@@ -167,14 +167,15 @@ module Interprete(D : DOMAIN) =
          *)        
        (* TODO add loop_unrolling *)
 				
-				let f x = if !loop_unrolling = 0 then (if !widen_delay = 0 then 
+				let f x = if !loop_unrolling = 0 then (
+					if !widen_delay = 0 then 
 					D.widen a (eval_stat (filter x e true) s) 
 					else (
 						widen_delay := !widen_delay - 1;
 						D.join a (eval_stat (filter x e true) s)
 					)) else (
 						loop_unrolling := !loop_unrolling - 1;
-						D.meet a (eval_stat (filter x e true) s)
+						eval_stat (filter x e true) s
 						) in 
         (* compute fixpoint from the initial state (i.e., a loop invariant) *)
          let inv = fix f a in 
