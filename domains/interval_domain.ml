@@ -16,7 +16,6 @@ module Intervals = (struct
   (* types *)
   (* ***** *)
 
-
   (* type of abstract values *)
   type t =
     | Interval of Q.t * Q.t (* x = (a,b) a range of values from a to b*)
@@ -207,10 +206,7 @@ module Intervals = (struct
   let print fmt x = match x with
   | BOT -> Format.fprintf fmt "bottom"
   | TOP -> Format.fprintf fmt "top"
-  |Interval (x,x1) -> if x=x1 then 
-			Format.fprintf fmt "{%s}" (Q.to_string x)
-		else 
-			Format.fprintf fmt "{%s}" ("["^(Q.to_string x) ^ "," ^ (Q.to_string x1)^"]")
+  |Interval (x,x1) -> Format.fprintf fmt "{%s}" ((Q.to_string x) ^ "," ^ (Q.to_string x1))
 
 
   (* operator dispatch *)

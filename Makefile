@@ -79,6 +79,10 @@ MLFILES = \
   domains/constant_domain.ml \
   domains/non_relational_domain.ml \
   domains/interval_domain.ml \
+  domains/parity_domain.ml \
+  domains/value_reduction.ml \
+  domains/parity_interval_reduction.ml \
+  domains/value_reduced_product.ml \
   interpreter/interpreter.ml \
   main.ml
 
