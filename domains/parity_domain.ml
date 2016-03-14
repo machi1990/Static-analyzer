@@ -86,7 +86,7 @@ module Parity = (struct
   let widen = join
 	
 	(* no need for a widening as the domain has finite height; we use the join *)
-  let narrow = meet
+  let narrow = join
 
 
  (* comparison operations (filters) *)

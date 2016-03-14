@@ -193,7 +193,7 @@ module Concrete = (struct
   let meet m1 m2 = EnvSet.inter m1 m2
 
 	(* abstract narrowing *)
-  let narrow = meet
+  let narrow = join
 
   (* whether an abstract element is included in another one *)
   let subset m1 m2 = EnvSet.subset m1 m2
