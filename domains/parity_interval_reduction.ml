@@ -15,14 +15,19 @@ open Parity_domain
 open Interval_domain
 
 module ParityIntervalsReduction = 
-(struct
+( struct
 	module A = Parity
 	module B = Intervals
 	
 	type t = A.t * B.t
 	
-	let reduce ((a,b):t) : t = a,b
-	
+	let reduce ((a,b):t) : t = 
+		if b = B.bottom then A.bottom,B.bottom  
+		else (
+				if b = B.top then A.top,B.top
+				else
+					a,b
+		)
 	
 	(* TODO check for infinity bounds *)
 	(*let reduce (p,i) =

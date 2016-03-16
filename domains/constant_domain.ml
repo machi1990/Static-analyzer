@@ -60,6 +60,11 @@ module Constants = (struct
   (* constant *)
   let const c = Cst c
 
+	(* 
+  let value c is_first = match c with
+	| Cst b -> b
+	| _ -> Z.minus_one  *)
+
   (* interval *)
   let rand x y =
     if x=y then Cst x 

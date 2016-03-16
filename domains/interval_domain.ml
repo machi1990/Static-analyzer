@@ -7,21 +7,20 @@
 (* 
    The interval domain
  *)
-
 open Abstract_syntax_tree
 open Value_domain
-
   
 module Intervals = (struct
   (* types *)
   (* ***** *)
 
   (* type of abstract values *)
-  type t =
-    | Interval of Q.t * Q.t (* x = (a,b) a range of values from a to b*)
+	type t = 
+		| Interval of Q.t * Q.t (* x = (a,b) a range of values from a to b*)
     | BOT         (* the set is empty (not reachable) *)
     | TOP         (* the set of all integers (not constant)  *)
 
+		
   (* interface implementation *)
   (* ************************ *)
 
@@ -186,7 +185,7 @@ module Intervals = (struct
 
   let neq a b =
     match a,b with
-		| Interval (x,x1), Interval (y,y1) -> if not(Q.equal x y) ||  not(Q.equal x1 y1) then a,b else BOT,BOT
+		| Interval (x,x1), Interval (y,y1) -> if subset a b || subset b a then BOT,BOT else a,b
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
     	  

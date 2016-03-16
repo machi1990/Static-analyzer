@@ -36,7 +36,7 @@ module type VALUE_DOMAIN =
     val meet: t -> t -> t
     
 		val narrow: t -> t -> t
-    		    
+      						    
     (* subset inclusion *)
     val subset: t -> t -> bool
         
@@ -45,7 +45,6 @@ module type VALUE_DOMAIN =
         
     (* print abstract element *)
     val print: Format.formatter -> t -> unit
-      
         
     (* unary operation *)
     val unary: t -> int_unary_op -> t
@@ -56,7 +55,8 @@ module type VALUE_DOMAIN =
     (* widening, for loops *)
     val widen: t -> t -> t
 
-
+		(*val value : t -> bool -> Z.t*)
+		
     (* comparison *)
     (* [compare x y op] returns (x',y') where
        - x' abstracts the set of v  in x such that v op v' is true for some v' in y
