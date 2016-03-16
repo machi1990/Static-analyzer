@@ -180,32 +180,111 @@ module Intervals = (struct
   let is_bottom a =
     a=BOT
 		
-	(* TODO *)	
-  let eq a b = if subset a b || subset b a then a,b else BOT,BOT
+	let q_rand a b = 	
+    if Q.gt a b then BOT
+    else Interval (a,b)	
 
-  let neq a b =
+	(* TODO *)	
+  let eq a b = (meet a b),(meet a b)
+
+  let rec neq a b =
     match a,b with
-		| Interval (x,x1), Interval (y,y1) -> if subset a b || subset b a then BOT,BOT else a,b
+		| Interval (x,x1), Interval (y,y1) -> if subset a b then (
+			let ans1 = (q_rand y (Q.sub x Q.one)) and ans2 = (q_rand (Q.add x1 Q.one) y1) in 						
+			if (ans1=BOT && ans2=BOT) then (
+					ans1,ans2
+				)
+			else (
+				if (is_bottom ans1) && not (is_bottom ans2) then a,ans2
+				else if (is_bottom ans2) && not (is_bottom ans1) then a,ans1
+				else a,b
+				)	
+			)
+		 else (
+				if subset b a then (
+					let ans1 = (q_rand x (Q.sub y Q.one)) and ans2 = (q_rand (Q.add y1 Q.one) x1) in 						
+						if (ans1=BOT && ans2=BOT) then (
+								BOT,BOT
+							)
+						else (
+						if (is_bottom ans1) && not (is_bottom ans2) then ans2,b
+						else if (is_bottom ans2) && not (is_bottom ans1) then ans1,b
+						else a,b
+						)	
+					) else (
+						if Q.equal x1 y then Interval(x,Q.sub x1 Q.one),Interval(Q.add y Q.one,y1)
+						else (
+							if Q.gt y x1 then (a,b)
+							else (
+								if Q.geq y1 x1 then (
+								let (i,i1) = (q_rand x (Q.sub y Q.one)),(q_rand (Q.add x1 Q.one ) y1) in
+								let first = (if not (is_bottom i) then i else Interval(y,x) )
+								and second = (if not (is_bottom i1) then i1 else Interval(y1,x1))
+										in
+										(first,second)
+							)  else (
+								let first = Interval(Q.add y1 Q.one,x1) and second = Interval(y,Q.sub x Q.one) in (first,second)
+								)
+					)
+			)))
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
     	  
-  let geq a b = match a,b with
-		| Interval (x,x1), Interval (y,y1) ->  if (Q.geq x1 y) then a,b else BOT,BOT
+	let geq a b = match a,b with
+	| Interval (x,x1), Interval (y,y1) ->  (
+		if Q.geq x y1 then a,b
+		else (
+			if Q.gt y x1 then BOT,BOT
+			else if Q.equal y x1 then Interval(x1,x1),b
+			else (
+				let sr_bound = Q.min x1 y1 in 
+				if Q.geq x y then
+					a,Interval(y,sr_bound)
+				else 
+					Interval(y,x1),Interval(y,sr_bound)	
+				)
+			)
+		)
+	| BOT,x | x,BOT -> x,BOT
+	| _ -> a,b
+		
+  let gt a b = match a,b with
+		| Interval (x,x1), Interval (y,y1) -> (
+			let pick s t = 	match s,t with
+				| BOT,BOT -> BOT,BOT
+				| BOT, _ -> a,t
+				| _,BOT -> s,b
+				| _ -> a, t (*Result not sure. TODO*)
+			in
+			if Q.gt x y1 then a,b
+			else if Q.equal x y1 then (
+				let add_one = q_rand (Q.add x Q.one ) x1 
+				and sub_one = q_rand y (Q.sub y1 Q.one) in
+						pick add_one sub_one
+				)
+			else (
+				let sr_bound = if Q.equal x1 y1 then Q.sub x1 Q.one else y1 
+				in if Q.gt x y then (
+					pick a (Interval(y,sr_bound))
+					)
+				else if Q.equal x y then (
+						pick (Interval(Q.add x Q.one,x1)) (Interval(Q.add y Q.one,sr_bound))
+					)
+				else (
+					a,b
+					)	 
+				)	
+		)
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
       
-  let gt a b =
-    match a,b with
-		| Interval (x,x1), Interval (y,y1) -> if (Q.gt x1 y) then a,b else BOT,BOT
-		| BOT,x | x,BOT -> x,BOT
-		| _ -> a,b
-
-
+	let to_string v = if Q.is_real v then Z.to_string (Q.to_bigint v) else Q.to_string v
+	
   (* prints abstract element *)
   let print fmt x = match x with
   | BOT -> Format.fprintf fmt "bottom"
   | TOP -> Format.fprintf fmt "top"
-  |Interval (x,x1) -> Format.fprintf fmt "{%s}" ((Q.to_string x) ^ "," ^ (Q.to_string x1))
+  |Interval (x,x1) -> Format.fprintf fmt "{%s}" (to_string x ^ "," ^ to_string x1)
 
 
   (* operator dispatch *)

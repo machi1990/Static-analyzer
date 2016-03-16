@@ -72,3 +72,6 @@ tests
 tests/observation
 tests/result-constant
 tests/result-interval
+url
+url/compilers
+url/packages
