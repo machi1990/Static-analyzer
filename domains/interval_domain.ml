@@ -254,7 +254,7 @@ module Intervals = (struct
 				| BOT,BOT -> BOT,BOT
 				| BOT, _ -> a,t
 				| _,BOT -> s,b
-				| _ -> a, t (*Result not sure. TODO*)
+				| _ -> a,t (*Result not sure. TODO*)
 			in
 			if Q.gt x y1 then a,b
 			else if Q.equal x y1 then (
@@ -263,17 +263,21 @@ module Intervals = (struct
 						pick add_one sub_one
 				)
 			else (
-				let sr_bound = if Q.equal x1 y1 then Q.sub x1 Q.one else y1 
-				in if Q.gt x y then (
-					pick a (Interval(y,sr_bound))
-					)
-				else if Q.equal x y then (
-						pick (Interval(Q.add x Q.one,x1)) (Interval(Q.add y Q.one,sr_bound))
-					)
-				else (
-					a,b
-					)	 
-				)	
+				if Q.geq y x1 then BOT,BOT
+				else(
+					let sr_bound = let min_sr_bound = 
+						Q.min x1 y1 in 
+						if Q.equal x1 min_sr_bound then Q.sub x1 Q.one else min_sr_bound
+					in if Q.gt x y then (
+						pick a (Interval(y,sr_bound))
+						)
+					else if Q.equal x y then (
+							pick (Interval(Q.add x Q.one,x1)) (Interval(Q.add y Q.one,sr_bound))
+						)
+					else (
+						Interval(Q.add y Q.one,x1),Interval(y,sr_bound)
+						))
+				)
 		)
 		| BOT,x | x,BOT -> x,BOT
 		| _ -> a,b
