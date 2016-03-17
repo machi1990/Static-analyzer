@@ -107,7 +107,7 @@ module Parity = (struct
 
   (* subset inclusion of concretizations *)
   let subset a b = match a,b with
-  | BOT,_ | _,TOP -> true
+  | BOT,_ | _,TOP | PAIR,PAIR | IMPAIR, IMPAIR -> true
   | _ -> false
 
   (* check the emptyness of the concretization *)

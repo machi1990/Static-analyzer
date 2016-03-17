@@ -45,21 +45,19 @@ module Intervals = (struct
 	| Interval(a,b) -> (
 		if Q.is_real a && Q.is_real b then Interval_Val(INT (Q.to_bigint a), INT(Q.to_bigint b))
 		else if Q.is_real a then (
-			TOP_
+			Interval_Val(INT (Q.to_bigint a), POS_INF)
 			)
 		else if Q.is_real b then (
-			TOP_
+			Interval_Val(NEG_INF, INT (Q.to_bigint b))
 			)
 		else (
-			TOP_
+			let to_bound x = if Q.equal x Q.minus_inf then NEG_INF else POS_INF in
+					Interval_Val(to_bound a,to_bound b)
 			)		
 		)
 	| TOP -> TOP_
 	| BOT -> BOT_
 
-
-	 (* set-theoretic operations *)
-  
   let join i i1 = match i,i1 with
   | BOT,x | x,BOT -> x
   | Interval (a,b), Interval (c,d) -> (
@@ -134,9 +132,9 @@ module Intervals = (struct
 	 	| _ -> BOT
 			
 	let erem a b = 
-		if not (Q.is_real a) then a 
+		if not (Q.is_real a) then b 
 		else (
-			if not (Q.is_real b) then b
+			if not (Q.is_real b) then a
 			else
 				make_q (Z.erem (Q.to_bigint a) (Q.to_bigint b)) 
 			)
