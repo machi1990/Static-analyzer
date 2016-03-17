@@ -25,13 +25,13 @@ open Domain
 let trace = ref false
 
 (* widening delay *)
-let widen_delay = ref 0
+let widen_delay = ref 3
 
 (* widening delay *)
-let narrowing_value = ref 0
+let narrowing_value = ref 1
 
 (* loop unrolling *)
-let loop_unrolling = ref 0
+let loop_unrolling = ref 3
 
 
 
