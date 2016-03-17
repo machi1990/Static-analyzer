@@ -1,7 +1,8 @@
 (*
   Cours "Typage et Analyse Statique"
   UniversitÃ© Pierre et Marie Curie
-	Author: Manyanda Chitimbo ©2016
+	Authors: Manyanda Chitimbo ©2016
+					Larbi Youcef Momo © 2016
   Original author: Antoine MinÃ© 2015
 *)
 
@@ -21,22 +22,12 @@ module ParityIntervalsReduction =
 	
 	type t = A.t * B.t
 	
-	let reduce ((a,b):t) : t = 
-		if b = B.bottom then A.bottom,B.bottom  
-		else (
-				if b = B.top then A.top,B.top
-				else
-					a,b
-		)
-	
-	(* TODO check for infinity bounds *)
-	(*let reduce (p,i) =
+	let do_reduce p i =
 		match i with
 		| a,b ->
-		let d = Q.to_bigint a and e = Q.to_bigint b in
 		(
-		let x = if not (A.subset (A.const d) p) then Z.add d Z.one else d
-		and	y = if not (A.subset (A.const e) p) then Z.sub e Z.one else e
+		let x = if not (A.subset (A.const a) p) then Z.add a Z.one else a
+		and	y = if not (A.subset (A.const b) p) then Z.sub b Z.one else b
 		in if Z.gt x y then A.bottom,B.bottom
 				else 
 					(
@@ -44,7 +35,23 @@ module ParityIntervalsReduction =
 						else 
 							(p,B.rand x y) 
 						)
-				) *)
+				)
+	
+	open Value_domain
+	let reduce ((a,b):t): t = match B.value b with
+	| Interval_Val(x,y) -> (
+		match x,y with 
+		| INT first, INT second -> do_reduce a (first,second)
+		| INT first, POS_INF -> a,b
+		| NEG_INF, INT second -> a,b
+		| NEG_INF, NEG_INF -> a,b
+		| POS_INF, POS_INF -> a,b
+		| NEG_INF, POS_INF -> a,b
+		| POS_INF, _ | _, NEG_INF -> A.bottom,B.bottom
+		)
+	| TOP_	-> A.top, B.top
+	| _ -> A.bottom, B.bottom
+		
 end : VALUE_REDUCTION)
 
     

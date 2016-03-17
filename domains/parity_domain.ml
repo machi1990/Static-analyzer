@@ -45,10 +45,11 @@ module Parity = (struct
     else if x<y then TOP
     else BOT
 
-	(* constant 
-  let value c is_first = match c with
-	| PAIR -> Z.zero
-	| IMPAIR -> Z.one *)
+	let value c = match c with
+	| PAIR -> Interval_Val(INT Z.zero, INT Z.zero)
+	| IMPAIR -> Interval_Val(INT Z.one, INT Z.one)
+	| BOT -> TOP_
+	| TOP -> TOP_
 
   (* arithmetic operations *)
 

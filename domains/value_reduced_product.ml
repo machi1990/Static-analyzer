@@ -1,3 +1,11 @@
+(*
+  Cours "Typage et Analyse Statique"
+  Universit√© Pierre et Marie Curie
+	Manyanda Chitimbo © 2016
+	Larbi Youcef Momo © 2016
+  Antoine Min√© 2015
+*)
+
 open Abstract_syntax_tree
 open Value_reduction
 open Value_domain
@@ -14,7 +22,10 @@ module ReducedProduct(R : VALUE_REDUCTION) = (struct
 	let bottom = R.reduce (A.bottom,B.bottom)
 	
 	let const c = R.reduce (A.const c,B.const c)
-
+	
+	(**)
+	let value (v,v1) = A.value v
+	
 	let rand x y = R.reduce (A.rand x y, B.rand x y)
 
   let join (a,b) (c,d) = R.reduce (A.join a c, B.join b d)

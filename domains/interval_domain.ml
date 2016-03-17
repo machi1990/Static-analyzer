@@ -1,7 +1,9 @@
 (*
   Cours "Typage et Analyse Statique"
   UniversitÃ© Pierre et Marie Curie
-  Author: Manyanda Chitimbo ©2016
+	Manyanda Chitimbo © 2016
+	Larbi Youcef Momo © 2016
+  Antoine MinÃ© 2015
 *)
 
 (* 
@@ -38,6 +40,23 @@ module Intervals = (struct
   let rand x y =
     if x > y then BOT
     else Interval (make_q x,make_q y)	
+
+	let value v = match v with
+	| Interval(a,b) -> (
+		if Q.is_real a && Q.is_real b then Interval_Val(INT (Q.to_bigint a), INT(Q.to_bigint b))
+		else if Q.is_real a then (
+			TOP_
+			)
+		else if Q.is_real b then (
+			TOP_
+			)
+		else (
+			TOP_
+			)		
+		)
+	| TOP -> TOP_
+	| BOT -> BOT_
+
 
 	 (* set-theoretic operations *)
   

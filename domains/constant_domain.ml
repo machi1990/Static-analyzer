@@ -71,6 +71,10 @@ module Constants = (struct
     else if x<y then TOP
     else BOT
 
+	let value v = match v with
+	| Cst x -> Interval_Val(INT x,INT x)
+	| TOP -> TOP_
+	| BOT -> BOT_
 
   (* arithmetic operations *)
 

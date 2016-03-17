@@ -1,6 +1,8 @@
 (*
   Cours "Typage et Analyse Statique"
   UniversitÃ© Pierre et Marie Curie
+	Manyanda Chitimbo © 2016
+	Larbi Youcef Momo © 2016
   Antoine MinÃ© 2015
 *)
 
@@ -10,7 +12,17 @@
  *)
 
 open Abstract_syntax_tree
-  
+
+(*A bound to be used in Parity_interval reduced product *)
+type bound = INT of Z.t 
+						| POS_INF
+						| NEG_INF
+
+(*An interval to bes used in Parity_interval reduced product*)														
+type interval_value = Interval_Val of bound*bound
+										| TOP_
+										| BOT_
+										
 module type VALUE_DOMAIN =
   sig
 
@@ -30,13 +42,16 @@ module type VALUE_DOMAIN =
     (* interval: [a,b] *)
     val rand: Z.t -> Z.t -> t
 
-
     (* set-theoretic operations *)
     val join: t -> t -> t
     val meet: t -> t -> t
     
+		(*Narrowing operation*)
 		val narrow: t -> t -> t
-      						    
+    
+		(*create an interval_value given a value of type t of a certain domain*)		
+		val value: t -> interval_value
+																									  						    
     (* subset inclusion *)
     val subset: t -> t -> bool
         

@@ -1,6 +1,8 @@
 (*
   Cours "Typage et Analyse Statique"
   Universit√© Pierre et Marie Curie
+	Manyanda Chitimbo © 2016
+	Larbi Youcef Momo © 2016
   Antoine Min√© 2015
 *)
 
