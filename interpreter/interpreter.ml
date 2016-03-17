@@ -171,17 +171,17 @@ module Interprete(D : DOMAIN) =
        (* TODO add loop_narrowing *)
 				
 				let f x = if !loop_unrolling = 0 then (
-					if !narrowing_value = 0 then (
-							if !widen_delay = 0 then 
-							D.widen a (eval_stat (filter x e true) s)
+					if !widen_delay = 0 then 
+							let widened = D.widen a (eval_stat (filter x e true) s) in
+							if !narrowing_value = 0 then widened 
+							else (
+									narrowing_value := !narrowing_value -1;
+									D.narrow (eval_stat (filter x e true) s) widened 
+							)
 					else (
 						widen_delay := !widen_delay - 1;
 						D.join a (eval_stat (filter x e true) s)
-					)) else (
-								narrowing_value := !narrowing_value -1;
-								D.narrow (eval_stat (filter x e true) s) a 
-							)  
-						) else (
+					)) else ( 
 						loop_unrolling := !loop_unrolling - 1;
 						eval_stat (filter x e true) s
 						) in 
