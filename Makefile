@@ -1,6 +1,7 @@
 # Cours "Typage et Analyse Statique"
 # Université Pierre et Marie Curie
 # Antoine Miné 2015
+# Manyanda Chitimbo � 20126
 
 # Makefile
 
@@ -84,6 +85,7 @@ MLFILES = \
   domains/parity_interval_reduction.ml \
   domains/value_reduced_product.ml \
   interpreter/interpreter.ml \
+  interpreter/trace_interpreter.ml \
   main.ml
 
 

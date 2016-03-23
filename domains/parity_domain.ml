@@ -96,15 +96,25 @@ module Parity = (struct
 
  (* comparison operations (filters) *)
  (* TODO *)
-  let eq a b = if a = b then a,b else BOT,BOT
+  let eq a b = match a,b with
+	| TOP,x| x,TOP -> x,x
+	| PAIR,IMPAIR| IMPAIR,PAIR -> BOT,BOT
+	| _ -> a,b
 
-  let neq a b = if a != b then a,b else BOT,BOT
+  let neq a b = if a=b then BOT,BOT
+	else (
+		match a,b with
+			| TOP,PAIR -> IMPAIR,PAIR
+			| PAIR,TOP ->  PAIR,IMPAIR
+			|	IMPAIR,TOP -> IMPAIR,PAIR
+			| TOP,IMPAIR -> PAIR,IMPAIR
+			| _ -> a,b
+	)
       
   let geq a b = a,b
       
   let gt a b = a,b
-
-
+	
   (* subset inclusion of concretizations *)
   let subset a b = match a,b with
   | BOT,_ | _,TOP | PAIR,PAIR | IMPAIR, IMPAIR -> true
