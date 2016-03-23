@@ -91,7 +91,7 @@ module Intervals = (struct
 
   let sub i i1 = 
 		match i,i1 with
-		| Interval(a,b), Interval(c,d) -> Interval((Q.sub a c), (Q.add b d))
+		| Interval(a,b), Interval(c,d) -> Interval((Q.sub a c), (Q.sub b d))
 		| _ -> BOT
 		
 
