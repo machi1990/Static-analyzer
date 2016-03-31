@@ -168,21 +168,23 @@ module Interprete(D : DOMAIN) =
            F(X(n+1)) = X(0) U body(F(X(n)
            we apply the loop body and add back the initial abstract state
          *)        
-       (* TODO add loop_narrowing *)
-				
-				let f x = if !loop_unrolling = 0 then (
-					if !widen_delay = 0 then 
+				let unroll = ref !loop_unrolling and
+						delay = ref !widen_delay and
+						narrowing = ref !narrowing_value in
+						
+				let f x = if !unroll = 0 then (
+					if !delay = 0 then 
 							let widened = D.widen a (eval_stat (filter x e true) s) in
-							if !narrowing_value = 0 then widened 
+							if !narrowing = 0 then widened 
 							else (
-									narrowing_value := !narrowing_value -1;
+									narrowing := !narrowing - 1;
 									D.narrow (eval_stat (filter x e true) s) widened 
 							)
 					else (
-						widen_delay := !widen_delay - 1;
+						delay := !delay - 1;
 						D.join a (eval_stat (filter x e true) s)
 					)) else ( 
-						loop_unrolling := !loop_unrolling - 1;
+						unroll := !unroll - 1;
 						eval_stat (filter x e true) s
 						) in 
         (* compute fixpoint from the initial state (i.e., a loop invariant) *)

@@ -10,8 +10,6 @@
   Abstract interpreter by induction on the syntax.
   Parameterized by an abstract domain.
 *)
-
-
 open Abstract_syntax_tree
 open Abstract_syntax_printer
 open Domain
@@ -20,13 +18,7 @@ open Interpreter
 module Trace_Interprete(D : DOMAIN) =
 (struct
  	type t = D.t
-	
-	type key = 
-		| TRUE
-		| FALSE
-		| BOT
-	
-	
+		
   let filter (a:t) (e:bool_expr ext) (r:bool) : t =
 
     (* recursive exploration of the expression *)
@@ -59,7 +51,10 @@ module Trace_Interprete(D : DOMAIN) =
     in
     doit a e r
 		
-	(*TODO trace partitionning evaluation here*)	
+		
+	module PATH  = Map.Make(String);;
+	
+	(*TODO trace partitioning evaluation here*)	
 	let rec eval_stat (a:t) ((s,ext):stat ext) : t = 
     let r = match s with    
 
@@ -93,19 +88,24 @@ module Trace_Interprete(D : DOMAIN) =
           if D.subset fx x then fx
           else fix f fx
         in
-				let f x = if !loop_unrolling = 0 then (
-					if !widen_delay = 0 then 
+				
+				let unroll = ref !loop_unrolling and
+						delay = ref !widen_delay and
+						narrowing = ref !narrowing_value in
+						
+				let f x = if !unroll = 0 then (
+					if !delay = 0 then 
 							let widened = D.widen a (eval_stat (filter x e true) s) in
-							if !narrowing_value = 0 then widened 
+							if !narrowing = 0 then widened 
 							else (
-									narrowing_value := !narrowing_value -1;
+									narrowing := !narrowing - 1;
 									D.narrow (eval_stat (filter x e true) s) widened 
 							)
 					else (
-						widen_delay := !widen_delay - 1;
+						delay := !delay - 1;
 						D.join a (eval_stat (filter x e true) s)
 					)) else ( 
-						loop_unrolling := !loop_unrolling - 1;
+						unroll := !unroll - 1;
 						eval_stat (filter x e true) s
 						) in 
          let inv = fix f a in 
@@ -132,7 +132,10 @@ module Trace_Interprete(D : DOMAIN) =
         (string_of_extent ext) D.print_all r;
     r
 
-				
-  let rec eval_prog (l:prog) : unit = ()
+	let history = PATH.add "true" (D.init()) PATH.empty;;
+	(*let history = PATH.add "false" (D.init()) history;;
+	let history = PATH.add "bottom" (D.init()) history;;*)
+							
+  let rec eval_prog (l:prog) : unit = let _ = List.fold_left eval_stat (D.init()) l in ()
 
 end : INTERPRETER)
