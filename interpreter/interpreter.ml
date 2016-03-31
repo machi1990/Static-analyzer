@@ -25,13 +25,13 @@ open Domain
 let trace = ref false
 
 (* widening delay *)
-let widen_delay = ref 3
+let widen_delay = ref 0
 
 (* widening delay *)
 let narrowing_value = ref 1
 
 (* loop unrolling *)
-let loop_unrolling = ref 3
+let loop_unrolling = ref 0
 
 
 
@@ -158,7 +158,11 @@ module Interprete(D : DOMAIN) =
         D.join t f
           
     | AST_while (e,s) ->
-        (* simple fixpoint *)
+     	let unroll = ref !loop_unrolling and
+						delay = ref !widen_delay and
+						narrowing = ref !narrowing_value in
+						
+				(* simple fixpoint *)	
         let rec fix (f:t -> t) (x:t) : t = 
           let fx = f x in
           if D.subset fx x then fx
@@ -167,11 +171,7 @@ module Interprete(D : DOMAIN) =
         (* function to accumulate one more loop iteration:
            F(X(n+1)) = X(0) U body(F(X(n)
            we apply the loop body and add back the initial abstract state
-         *)        
-				let unroll = ref !loop_unrolling and
-						delay = ref !widen_delay and
-						narrowing = ref !narrowing_value in
-						
+         *)
 				let f x = if !unroll = 0 then (
 					if !delay = 0 then 
 							let widened = D.widen a (eval_stat (filter x e true) s) in
