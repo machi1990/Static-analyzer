@@ -51,9 +51,6 @@ module Trace_Interprete(D : DOMAIN) =
     in
     doit a e r
 		
-		
-	module PATH  = Map.Make(String);;
-	
 	(*TODO trace partitioning evaluation here*)	
 	let rec eval_stat (a:t) ((s,ext):stat ext) : t = 
     let r = match s with    
@@ -73,7 +70,7 @@ module Trace_Interprete(D : DOMAIN) =
         D.assign a i e
           
     | AST_if (e,s1,Some s2) ->
-        let t = eval_stat (filter a e true ) s1 in
+				let t = eval_stat (filter a e true ) s1 in
         let f = eval_stat (filter a e false) s2 in
         D.join t f
           
@@ -82,17 +79,17 @@ module Trace_Interprete(D : DOMAIN) =
         let f = filter a e false in
         D.join t f
           
-    | AST_while (e,s) ->
+    | AST_while (e,s) -> 
+			let unroll = ref !loop_unrolling and
+					delay = ref !widen_delay and
+					narrowing = ref !narrowing_value in
+						
         let rec fix (f:t -> t) (x:t) : t = 
           let fx = f x in
           if D.subset fx x then fx
           else fix f fx
         in
 				
-				let unroll = ref !loop_unrolling and
-						delay = ref !widen_delay and
-						narrowing = ref !narrowing_value in
-						
 				let f x = if !unroll = 0 then (
 					if !delay = 0 then 
 							let widened = D.widen a (eval_stat (filter x e true) s) in
@@ -132,10 +129,115 @@ module Trace_Interprete(D : DOMAIN) =
         (string_of_extent ext) D.print_all r;
     r
 
-	let history = PATH.add "true" (D.init()) PATH.empty;;
-	(*let history = PATH.add "false" (D.init()) history;;
-	let history = PATH.add "bottom" (D.init()) history;;*)
-							
-  let rec eval_prog (l:prog) : unit = let _ = List.fold_left eval_stat (D.init()) l in ()
+
+	(* Partitioning evaluation*)
+	module PATH  = Mapext.Make(String);;	
+	let history = PATH.add "bottom" (D.init()) PATH.empty;;
+
+	let print_element ext key domaine =  
+			Format.printf "%s: %a@\n" 
+      ((string_of_extent ext)^"  "^key) D.print_all domaine; ()
+			
+	let print_history ext history = PATH.iter (print_element ext) history; ()
+		
+		
+	let rec eval_stat_paths (history) ((s,ext):stat ext) = 
+		let r = match s with    
+    | AST_block (decl,inst) ->
+        let add x =
+          List.fold_left
+            (fun a ((_,v),_) -> D.add_var a v)
+            x decl
+        in let mapped = PATH.map add history in					
+        let mapped = List.fold_left eval_stat_paths mapped inst in
+				let del x = List.fold_left (fun a ((_,v),_) -> D.del_var a v) x decl 
+				in PATH.map del mapped
+				
+		| AST_assign ((i,_),(e,_)) ->
+      let f x = D.assign x i e in
+			PATH.map f history	
+				
+		| AST_assert (e,p) ->
+				let f x = let filtered = filter x (e,p) false in 
+				if not (D.is_bottom filtered) then (error p "Assertion error.");
+				filter x (e,p) true in
+				PATH.map f history;
+				
+    | AST_print l ->
+       let print_dom key x = 
+					let l' = List.map fst l in
+        Format.printf "%s: %a@\n"
+          ((string_of_extent ext)^"  "^key) (fun fmt v -> D.print fmt x v) l'; 
+					in PATH.iter print_dom history; 
+				
+        history
+          
+    | AST_HALT ->
+        let f x = D.bottom() in
+				PATH.map f history
+				
+		| AST_if (e,s1,Some s2) ->
+				let find key = if (PATH.mem key history) 
+				then (PATH.find key history) else D.bottom() in
+				let acc = ref (find "bottom") in 
+						acc := (D.join (find "true") !acc);
+						acc := (D.join (find "false") !acc);
+        let t = eval_stat (filter !acc e true ) s1 in
+        let f = eval_stat (filter !acc e false) s2 in
+				let b = D.join t f in  
+				let mapped = PATH.add "true" t history in
+				let mapped = PATH.add "false" f mapped in
+				PATH.add "bottom" b mapped;
+		      
+    | AST_if (e,s1,None) ->
+				let find key = if (PATH.mem key history) 
+				then (PATH.find key history) else D.bottom() in
+				let acc = ref (find "bottom") in 
+						acc := (D.join (find "true") !acc);
+						acc := (D.join (find "false") !acc);
+        let t = eval_stat (filter !acc e true ) s1 in
+        let f = (filter !acc e false) in
+				let b = D.join t f in  
+				let mapped = PATH.add "true" t history in
+				let mapped = PATH.add "false" f mapped in
+				PATH.add "bottom" b mapped;
+						
+	  | AST_while (e,s) -> 
+		let unroll = ref !loop_unrolling and
+				delay = ref !widen_delay and
+				narrowing = ref !narrowing_value in 
+			let a = PATH.find "bottom" history in	
+      let rec fix (f:t -> t) (x:t) : t = 
+        let fx = f x in
+        if D.subset fx x then fx
+        else fix f fx
+      in
+			
+			let f x = if !unroll = 0 then (
+				if !delay = 0 then 
+						let widened = D.widen a (eval_stat (filter x e true) s) in
+						if !narrowing = 0 then widened 
+						else (
+								narrowing := !narrowing - 1;
+								D.narrow (eval_stat (filter x e true) s) widened 
+						)
+				else (
+					delay := !delay - 1;
+					D.join a (eval_stat (filter x e true) s)
+				)) else ( 
+					unroll := !unroll - 1;
+					eval_stat (filter x e true) s
+					) in 
+       let inv = fix f a in 
+				filter inv e false;	
+				
+		| _ -> history in
+		
+		(* tracing, useful for debugging *)
+    if !trace then print_history ext r;
+		
+		r			
+																
+  let rec eval_prog (l:prog) : unit = let _ = List.fold_left eval_stat_paths (history) l in ()
 
 end : INTERPRETER)

@@ -159,8 +159,8 @@ module Interprete(D : DOMAIN) =
           
     | AST_while (e,s) ->
      	let unroll = ref !loop_unrolling and
-						delay = ref !widen_delay and
-						narrowing = ref !narrowing_value in
+					delay = ref !widen_delay and
+					narrowing = ref !narrowing_value in
 						
 				(* simple fixpoint *)	
         let rec fix (f:t -> t) (x:t) : t = 
