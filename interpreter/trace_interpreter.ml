@@ -130,7 +130,7 @@ module Trace_Interprete(D : DOMAIN) =
     r
 
 
-	(* Partitioning evaluation*)
+	(* TODO Partitioning evaluation*)
 	module PATH  = Mapext.Make(String);;	
 	let history = PATH.add "bottom" (D.init()) PATH.empty;;
 
@@ -139,8 +139,16 @@ module Trace_Interprete(D : DOMAIN) =
       ((string_of_extent ext)^"  "^key) D.print_all domaine; ()
 			
 	let print_history ext history = PATH.iter (print_element ext) history; ()
+	
+	(*Not sound*)		
+	let find key history = if (PATH.mem key history) then (PATH.find key history) else D.bottom()
+	
+	let fold history = let acc = ref ( find "bottom" history) in
+										acc :=	(D.join !acc (find "true" history));
+										acc :=	(D.join !acc (find "false" history));
+										!acc
 		
-		
+					 	
 	let rec eval_stat_paths (history) ((s,ext):stat ext) = 
 		let r = match s with    
     | AST_block (decl,inst) ->
@@ -177,26 +185,18 @@ module Trace_Interprete(D : DOMAIN) =
 				PATH.map f history
 				
 		| AST_if (e,s1,Some s2) ->
-				let find key = if (PATH.mem key history) 
-				then (PATH.find key history) else D.bottom() in
-				let acc = ref (find "bottom") in 
-						acc := (D.join (find "true") !acc);
-						acc := (D.join (find "false") !acc);
-        let t = eval_stat (filter !acc e true ) s1 in
-        let f = eval_stat (filter !acc e false) s2 in
+				let union = fold history in
+        let t = fold (eval_stat_paths (PATH.add "bottom" (filter union e true ) PATH.empty) s1) in
+        let f = fold (eval_stat_paths (PATH.add "bottom" (filter union e false) PATH.empty) s2) in
 				let b = D.join t f in  
 				let mapped = PATH.add "true" t history in
 				let mapped = PATH.add "false" f mapped in
 				PATH.add "bottom" b mapped;
 		      
     | AST_if (e,s1,None) ->
-				let find key = if (PATH.mem key history) 
-				then (PATH.find key history) else D.bottom() in
-				let acc = ref (find "bottom") in 
-						acc := (D.join (find "true") !acc);
-						acc := (D.join (find "false") !acc);
-        let t = eval_stat (filter !acc e true ) s1 in
-        let f = (filter !acc e false) in
+				let union = fold history in
+        let t = fold (eval_stat_paths (PATH.add "bottom" (filter union e true ) PATH.empty) s1) in
+        let f = (filter union e false) in
 				let b = D.join t f in  
 				let mapped = PATH.add "true" t history in
 				let mapped = PATH.add "false" f mapped in
@@ -206,32 +206,46 @@ module Trace_Interprete(D : DOMAIN) =
 		let unroll = ref !loop_unrolling and
 				delay = ref !widen_delay and
 				narrowing = ref !narrowing_value in 
-			let a = PATH.find "bottom" history in	
-      let rec fix (f:t -> t) (x:t) : t = 
+
+				let trace_subset x m = (D.subset (find "bottom" m) (find "bottom" x)) 
+					&& (D.subset (find "true" m) ( find "true" x))
+					&& (D.subset (find "false" m) ( find "false" x))	
+				in		
+		  let rec fix f x = 
         let fx = f x in
-        if D.subset fx x then fx
+        if trace_subset x fx then fx
         else fix f fx
       in
 			
-			let f x = if !unroll = 0 then (
+			let f h = 
+				let doit x key =
+				let a = find key history in	
+				if !unroll = 0 then (
 				if !delay = 0 then 
-						let widened = D.widen a (eval_stat (filter x e true) s) in
+						let widened = PATH.add key (D.widen a ( fold (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty) s))) PATH.empty in
 						if !narrowing = 0 then widened 
 						else (
 								narrowing := !narrowing - 1;
-								D.narrow (eval_stat (filter x e true) s) widened 
+								let narrowed = D.narrow ( fold (eval_stat_paths(PATH.add key(filter x e true) PATH.empty ) s)) (fold widened) 
+								in PATH.add key narrowed PATH.empty
 						)
 				else (
 					delay := !delay - 1;
-					D.join a (eval_stat (filter x e true) s)
+					let joined = D.join a (fold (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty ) s)) 
+					in PATH.add key joined PATH.empty
 				)) else ( 
 					unroll := !unroll - 1;
-					eval_stat (filter x e true) s
+					eval_stat_paths (PATH.add key (filter x e true) PATH.empty ) s
 					) in 
-       let inv = fix f a in 
-				filter inv e false; history	
-				
-		| _ -> history in
+					let res = PATH.add "bottom" (fold (doit (find "bottom" h) "bottom")) PATH.empty in
+					let res = if PATH.mem "true" h then (PATH.add "true" (fold (doit ( find "true" h) "true")) res) else res in
+					let res = if PATH.mem "false" h then PATH.add "false" (fold (doit (find "false" h) "false")) res else res in 
+					res 
+					in let inv = fix f history in 
+					let filtered = PATH.add "bottom" (filter (find "bottom" inv) e false) PATH.empty in
+					let filtered = if PATH.mem "true" inv then PATH.add "true" (filter (find "true" inv) e false) filtered else filtered in
+					if PATH.mem "false" inv then PATH.add "false" (filter (find "false" inv) e false) filtered else filtered
+	 in
 		
 		(* tracing, useful for debugging *)
     if !trace then print_history ext r;
