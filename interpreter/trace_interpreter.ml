@@ -229,7 +229,7 @@ module Trace_Interprete(D : DOMAIN) =
 					eval_stat (filter x e true) s
 					) in 
        let inv = fix f a in 
-				filter inv e false;	
+				filter inv e false; history	
 				
 		| _ -> history in
 		
