@@ -203,14 +203,10 @@ module Trace_Interprete(D : DOMAIN) =
 				PATH.add "bottom" b mapped;
 						
 	  | AST_while (e,s) -> 
-		let unroll = ref !loop_unrolling and
-				delay = ref !widen_delay and
-				narrowing = ref !narrowing_value in 
-
-				let trace_subset x m = (D.subset (find "bottom" m) (find "bottom" x)) 
-					&& (D.subset (find "true" m) ( find "true" x))
-					&& (D.subset (find "false" m) ( find "false" x))	
-				in		
+			let trace_subset x m = (D.subset (find "bottom" m) (find "bottom" x)) 
+				&& (D.subset (find "true" m) ( find "true" x))
+				&& (D.subset (find "false" m) ( find "false" x))	
+			in		
 		  let rec fix f x = 
         let fx = f x in
         if trace_subset x fx then fx
@@ -218,10 +214,9 @@ module Trace_Interprete(D : DOMAIN) =
       in
 			
 			let f h = 
-				let doit x key =
-				let a = find key history in	
-				if !unroll = 0 then (
-				if !delay = 0 then 
+				let doit x key = let unroll = ref !loop_unrolling and delay = ref !widen_delay and
+				narrowing = ref !narrowing_value and	a = find key history in	
+				if !unroll = 0 then ( if !delay = 0 then 
 						let widened = PATH.add key (D.widen a ( fold (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty) s))) PATH.empty in
 						if !narrowing = 0 then widened 
 						else (
