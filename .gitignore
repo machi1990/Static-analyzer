@@ -1,5 +1,5 @@
-./settings
-./paths
+/.settings
+/.paths
 *.o
 *.cmi
 *.cmo

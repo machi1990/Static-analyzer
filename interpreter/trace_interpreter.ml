@@ -72,7 +72,23 @@ module Trace_Interprete(D : DOMAIN) =
 										acc :=	(D.join !acc (find true_key history));
 										acc :=	(D.join !acc (find false_key history));
 										!acc
-		
+	
+																			
+	let append_map_to map target = if PATH.is_empty target then map else (
+			if PATH.is_empty map then target else (
+					let apply key m m1 = if PATH.mem key m then (
+							if PATH.mem key m1 then (
+									let v = find key m and v1 = find key m1 in
+									let joined = D.join v v1 in PATH.add key joined m1
+								) else (
+									PATH.add key (find key m) m1
+								)
+						) else m1 in
+					let res = apply bottom_key map target in 
+					let res  = apply true_key map res in 
+					apply false_key map res
+				)
+		)
 					 	
 	let rec eval_stat_paths (history) ((s,ext):stat ext) = 
 		let r = match s with    
@@ -158,17 +174,14 @@ module Trace_Interprete(D : DOMAIN) =
 						)
 				else (
 					let evaluated = (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty ) s) in
-					PATH.map (fun x -> D.join a x) evaluated
-				)) else ( 
+					PATH.map (fun x -> D.join a x) evaluated )) else ( 
 					eval_stat_paths (PATH.add key (filter x e true) PATH.empty ) s
-					) in 
-					let res = doit (find bottom_key h) bottom_key in 
-					let res = if PATH.mem true_key h then (let doneit = doit ( find true_key h) true_key 
-												in PATH.mapi (fun k v -> D.join v (find k res)) doneit )
-										else res in
-					let res = if PATH.mem false_key h then
-						let doneit = ( doit (find false_key h) false_key ) in 
-						PATH.mapi (fun k v -> D.join v (find k res)) doneit
+					) 
+					in let res = if PATH.mem bottom_key h then doit (find bottom_key h) bottom_key else PATH.empty in 
+					let res = if PATH.mem false_key h then (
+							let doneit = doit ( find false_key h) false_key in append_map_to doneit res ) 
+					else res in let res = if PATH.mem true_key h then
+						let doneit = doit (find true_key h) true_key in append_map_to doneit res
 						else res in 
 					res 
 					in let inv = fix f history !loop_unrolling !widen_delay !narrowing_value in 
