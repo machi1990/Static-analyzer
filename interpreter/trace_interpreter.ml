@@ -130,38 +130,48 @@ module Trace_Interprete(D : DOMAIN) =
 	  | AST_while (e,s) -> 
 			let trace_subset x m = (D.subset (find bottom_key m) (find bottom_key x)) 
 				&& (D.subset (find true_key m) ( find true_key x))
-				&& (D.subset (find false_key m) ( find false_key x))	
-			in		
-		  let rec fix f x = 
-        let fx = f x in
+				&& (D.subset (find false_key m) ( find false_key x))	in 
+				
+				(*Fix point calculation *)
+				let rec fix f x delay unroll narrowing = 
+        let fx = f x delay unroll narrowing in
         if trace_subset x fx then fx
-        else fix f fx
+        else (
+					let minus_1 x = if x > 0 then x-1 else 0 in  
+					let unroll = minus_1 unroll and
+							delay = minus_1 delay and
+							narrowing = minus_1 narrowing in
+					fix f fx delay unroll narrowing
+					)
       in
 			
-			let f h = 
-				let doit x key = let unroll = ref !loop_unrolling and delay = ref !widen_delay and
-				narrowing = ref !narrowing_value and	a = find key history in	
-				if !unroll = 0 then ( if !delay = 0 then 
-						let widened = PATH.add key (D.widen a ( fold (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty) s))) PATH.empty in
-						if !narrowing = 0 then widened 
+			let f h delay unroll narrowing = 
+				let doit x key = let a = find key history in
+				if unroll = 0 then ( 
+					if delay = 0 then 
+						let widened = let evaluated =  (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty) s) in
+											PATH.map (fun x -> D.widen a x) evaluated in
+						if narrowing = 0 then widened 
 						else (
-								narrowing := !narrowing - 1;
-								let narrowed = D.narrow ( fold (eval_stat_paths(PATH.add key(filter x e true) PATH.empty ) s)) (fold widened) 
-								in PATH.add key narrowed PATH.empty
+								let evaluated = (eval_stat_paths(PATH.add key (filter x e true) PATH.empty ) s) 
+								in PATH.mapi (fun k v -> D.narrow v (find k widened)) evaluated
 						)
 				else (
-					delay := !delay - 1;
-					let joined = D.join a (fold (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty ) s)) 
-					in PATH.add key joined PATH.empty
+					let evaluated = (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty ) s) in
+					PATH.map (fun x -> D.join a x) evaluated
 				)) else ( 
-					unroll := !unroll - 1;
 					eval_stat_paths (PATH.add key (filter x e true) PATH.empty ) s
 					) in 
-					let res = PATH.add bottom_key (fold (doit (find bottom_key h) bottom_key)) PATH.empty in
-					let res = if PATH.mem true_key h then (PATH.add true_key (fold (doit ( find true_key h) true_key)) res) else res in
-					let res = if PATH.mem false_key h then PATH.add false_key (fold (doit (find false_key h) false_key)) res else res in 
+					let res = doit (find bottom_key h) bottom_key in 
+					let res = if PATH.mem true_key h then (let doneit = doit ( find true_key h) true_key 
+												in PATH.mapi (fun k v -> D.join v (find k res)) doneit )
+										else res in
+					let res = if PATH.mem false_key h then
+						let doneit = ( doit (find false_key h) false_key ) in 
+						PATH.mapi (fun k v -> D.join v (find k res)) doneit
+						else res in 
 					res 
-					in let inv = fix f history in 
+					in let inv = fix f history !loop_unrolling !widen_delay !narrowing_value in 
 					let filtered = PATH.add bottom_key (filter (find bottom_key inv) e false) PATH.empty in
 					let filtered = if PATH.mem true_key inv then PATH.add true_key (filter (find true_key inv) e false) filtered else filtered in
 					if PATH.mem false_key inv then PATH.add false_key (filter (find false_key inv) e false) filtered else filtered
