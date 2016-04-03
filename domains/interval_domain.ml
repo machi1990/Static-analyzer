@@ -1,8 +1,8 @@
 (*
   Cours "Typage et Analyse Statique"
   UniversitÃ© Pierre et Marie Curie
-	Manyanda Chitimbo © 2016
-	Larbi Youcef Momo © 2016
+	Manyanda Chitimbo ï¿½ 2016
+	Larbi Youcef Momo ï¿½ 2016
   Antoine MinÃ© 2015
 *)
 
@@ -81,17 +81,17 @@ module Intervals = (struct
   (* arithmetic operations *)
 
   let neg i = match i with
-	| Interval(a,b) -> Interval (Q.neg b, Q.neg a)
+	| Interval(a,b) -> let (c,d) = (Q.neg b,Q.neg a) in if Q.gt c d then Interval (d,c) else Interval (c,d)
 	| _ -> BOT
 
   let add i i1 = 
 		match i,i1 with
-		| Interval(a,b), Interval(c,d) -> Interval((Q.add a c), (Q.add b d))
+		| Interval(a,b), Interval(c,d) -> Interval(Q.add a c,Q.add b d)
 		| _ -> BOT
 
   let sub i i1 = 
 		match i,i1 with
-		| Interval(a,b), Interval(c,d) -> Interval((Q.sub a c), (Q.sub b d))
+		| Interval(a,b), Interval(c,d) -> Interval (Q.sub a d,Q.sub b c) 
 		| _ -> BOT
 		
 
