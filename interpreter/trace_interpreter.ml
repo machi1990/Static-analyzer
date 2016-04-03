@@ -1,7 +1,7 @@
 (*
   Cours "Typage et Analyse Statique"
   UniversitÃ© Pierre et Marie Curie
-  Author: Manyanda Chitimbo ©2016
+  Author: Manyanda Chitimbo ï¿½2016
 *)
 
 
@@ -132,7 +132,7 @@ module Trace_Interprete(D : DOMAIN) =
 				&& (D.subset (find true_key m) ( find true_key x))
 				&& (D.subset (find false_key m) ( find false_key x))	in 
 				
-				(*Fix point calculation *)
+				(*Fixed point calculation *)
 				let rec fix f x delay unroll narrowing = 
         let fx = f x delay unroll narrowing in
         if trace_subset x fx then fx
