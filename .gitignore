@@ -1,0 +1,12 @@
+./settings
+./paths
+*.o
+*.cmi
+*.cmo
+*.cmx
+*.conflicts
+/depend
+frontend/lexer.ml
+frontend/parser.ml
+frontend/parser.mli
+*.byte
