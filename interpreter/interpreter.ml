@@ -120,7 +120,8 @@ module Interprete(D : DOMAIN) =
     doit a e r
 
 
-      
+   
+	(*TODO narrowing*)		   
   (* interprets a statement, by induction on the syntax *)
   let rec eval_stat (a:t) ((s,ext):stat ext) : t = 
     let r = match s with    
@@ -174,11 +175,12 @@ module Interprete(D : DOMAIN) =
          *)
 				let f x = if !unroll = 0 then (
 					if !delay = 0 then 
-							let widened = D.widen x (eval_stat (filter x e true) s) in
+							let evaluated = (eval_stat (filter x e true) s) in
+							let widened = D.widen x evaluated in
 							if !narrowing = 0 then widened 
 							else (
 									narrowing := !narrowing - 1;
-									D.narrow  (eval_stat (filter x e true) s) widened
+									D.narrow evaluated x;
 							)
 					else (
 						delay := !delay - 1;
@@ -188,7 +190,7 @@ module Interprete(D : DOMAIN) =
 						eval_stat (filter x e true) s
 						) in 
         (* compute fixpoint from the initial state (i.e., a loop invariant) *)
-         let inv = fix f a in 
+         let inv = fix f a in
 					filter inv e false
 
     | AST_assert (e,p) ->
