@@ -1,7 +1,7 @@
 (*
   Cours "Typage et Analyse Statique"
   Université Pierre et Marie Curie
-  Author: Manyanda Chitimbo �2016
+  Author: Manyanda Chitimbo �2016
   Original author: Antoine Miné 2015
 *)
 
@@ -55,9 +55,9 @@ let main () =
 		 "-interval", Arg.Unit (fun () -> action := IntervalAnalysis.eval_prog),"";
 		 "-partition", Arg.Unit (fun () -> action := TraceIntervalAnalysis.eval_prog),"";	 
 		 "-reduced", Arg.Unit (fun () -> action := ReducedProductAnalysis.eval_prog),"";	 
-		 "-delay", Arg.Int (fun n -> if n > !Interpreter.widen_delay then Interpreter.widen_delay := n),"";
-		 "-unroll", Arg.Int (fun n -> if n > !Interpreter.loop_unrolling then Interpreter.loop_unrolling := n),"";
-		 "-narrow", Arg.Int (fun n -> if n > !Interpreter.narrowing_value then Interpreter.narrowing_value := n),"";	 
+		 "-delay", Arg.Int (fun n -> if n > -1 then Interpreter.widen_delay := n),"";
+		 "-unroll", Arg.Int (fun n -> if n > -1 then Interpreter.loop_unrolling := n),"";
+		 "-narrow", Arg.Int (fun n -> if n > -1 then Interpreter.narrowing_value := n),"";	 
    ]
     (* handle filenames *)
     (fun filename -> files := (!files)@[filename])
