@@ -31,7 +31,7 @@ let widen_delay = ref 3
 let narrowing_value = ref 1
 
 (* loop unrolling *)
-let loop_unrolling = ref 3
+let loop_unrolling = ref 0
 
 
 
