@@ -1,7 +1,7 @@
 (*
   Cours "Typage et Analyse Statique"
   Université Pierre et Marie Curie
-  Author: Manyanda Chitimbo �2016
+  Author: Manyanda Chitimbo �2016
   Original author: Antoine Miné 2015
 *)
 
@@ -25,13 +25,13 @@ open Domain
 let trace = ref false
 
 (* widening delay *)
-let widen_delay = ref 0
+let widen_delay = ref 3
 
 (* widening delay *)
 let narrowing_value = ref 1
 
 (* loop unrolling *)
-let loop_unrolling = ref 0
+let loop_unrolling = ref 3
 
 
 
@@ -174,15 +174,15 @@ module Interprete(D : DOMAIN) =
          *)
 				let f x = if !unroll = 0 then (
 					if !delay = 0 then 
-							let widened = D.widen a (eval_stat (filter x e true) s) in
+							let widened = D.widen x (eval_stat (filter x e true) s) in
 							if !narrowing = 0 then widened 
 							else (
 									narrowing := !narrowing - 1;
-									D.narrow (eval_stat (filter x e true) s) widened 
+									D.narrow  (eval_stat (filter x e true) s) widened
 							)
 					else (
 						delay := !delay - 1;
-						D.join a (eval_stat (filter x e true) s)
+						D.join x (eval_stat (filter x e true) s)
 					)) else ( 
 						unroll := !unroll - 1;
 						eval_stat (filter x e true) s

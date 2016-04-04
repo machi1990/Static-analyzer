@@ -162,11 +162,11 @@ module Trace_Interprete(D : DOMAIN) =
       in
 			
 			let f h delay unroll narrowing = 
-				let doit x key = let a = find key history in
+				let doit x key = 
 				if unroll = 0 then ( 
 					if delay = 0 then 
 						let widened = let evaluated =  (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty) s) in
-											PATH.map (fun x -> D.widen a x) evaluated in
+											PATH.map (fun m -> D.widen x m) evaluated in
 						if narrowing = 0 then widened 
 						else (
 								let evaluated = (eval_stat_paths(PATH.add key (filter x e true) PATH.empty ) s) 
@@ -174,7 +174,7 @@ module Trace_Interprete(D : DOMAIN) =
 						)
 				else (
 					let evaluated = (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty ) s) in
-					PATH.map (fun x -> D.join a x) evaluated )) else ( 
+					PATH.map (fun m -> D.join x m) evaluated )) else ( 
 					eval_stat_paths (PATH.add key (filter x e true) PATH.empty ) s
 					) 
 					in let res = if PATH.mem bottom_key h then doit (find bottom_key h) bottom_key else PATH.empty in 
