@@ -14,6 +14,10 @@ module ConstantAnalysis =
     (Non_relational_domain.NonRelational
        (Constant_domain.Constants))
     
+module TraceConstantAnalysis =
+  Trace_interpreter.Trace_Interprete
+    (Non_relational_domain.NonRelational
+       (Constant_domain.Constants))
 
 module IntervalAnalysis =
   Interpreter.Interprete
@@ -53,7 +57,8 @@ let main () =
      "-concrete", Arg.Unit (fun () -> action := ConcreteAnalysis.eval_prog),"";
      "-constant", Arg.Unit (fun () -> action := ConstantAnalysis.eval_prog),"";
 		 "-interval", Arg.Unit (fun () -> action := IntervalAnalysis.eval_prog),"";
-		 "-partition", Arg.Unit (fun () -> action := TraceIntervalAnalysis.eval_prog),"";	 
+		 "-partition-interval", Arg.Unit (fun () -> action := TraceIntervalAnalysis.eval_prog),"";
+		"-partition-constant", Arg.Unit (fun () -> action := TraceConstantAnalysis.eval_prog),"";	 	 
 		 "-reduced", Arg.Unit (fun () -> action := ReducedProductAnalysis.eval_prog),"";	 
 		 "-delay", Arg.Int (fun n -> if n > -1 then Interpreter.widen_delay := n),"";
 		 "-unroll", Arg.Int (fun n -> if n > -1 then Interpreter.loop_unrolling := n),"";
