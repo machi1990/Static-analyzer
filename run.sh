@@ -9,6 +9,26 @@ delay=0
 unroll=3
 narrow=0
 
+help_ () {
+    echo "Usage: [options] [argument] ..."
+    echo "Options: "
+    echo "-s Name                 Folder's name where source files are located. Required option."
+    echo "-r Name                 Result's folder name. Required option."
+    echo "-d N                    N iterations for loop's widening delay."
+    echo "-u N                    N iterations for loop unrolling."
+    echo "-n N                    N iterations for loop's fixed point narrowing."
+    echo "-h                      Print this message."
+    echo " "
+    echo "This script targets Unix's OS."
+    echo "Report bugs to Manyanda Chitimbo <chitson1990@gmail.com>."
+    exit 1
+}
+
+usage () {
+    echo "Usage: bash run.sh -h";
+    exit 1
+}
+
 # extract options and their arguments into variables.
 options=":d:,:u:,:n:,h,:s:,:r:"
 while getopts $options opt; do
@@ -44,26 +64,16 @@ while getopts $options opt; do
         RESULT=$OPTARG
         ;;
     h)
-        echo "Usage: [options] [argument] ..."
-        echo "Options: "
-        echo "-s Name                 Folder's name where source files are located. Required option."
-        echo "-r Name                 Result's folder name. Required option."
-        echo "-d N                    N iterations for loop's widening delay."
-        echo "-u N                    N iterations for loop unrolling."
-        echo "-n N                    N iterations for loop's fixed point narrowing."
-        echo "-h                      Print this message."
-        echo " "
-        echo "This script targets Unix's OS."
-        echo "Report bugs to Manyanda Chitimbo <chitson1990@gmail.com>."
-        exit 1
+        help_
         ;;
 
     *  ) echo "Unimplemented option: -$OPTARG" >&2;
-    exit 1;;
+        usage
+        ;;
 
     \?)
       echo "Invalid option: -$OPTARG" >&2
-      exit 1
+      usage;
       ;;
     :)
         case $OPTARG in
@@ -75,8 +85,7 @@ while getopts $options opt; do
             n) echo "Loop's fixed point narrowing analysis option requires an argument." >&2
                 ;;
         esac
-
-        exit 1
+        usage
       ;;
   esac
 done
@@ -85,7 +94,7 @@ done
 if ! $rf_present
 then
     echo "Result directory must be included when a directory is specified" >&2
-    exit 1
+    usage;
 fi
 
 RESULT=$RESULT"/"
@@ -123,7 +132,7 @@ fi
 if ! $sf_present
 then
     echo "Source directory must be included when a directory is specified" >&2
-    exit 1
+    usage;
 else
     if ! [ -d "$SOURCE" ]; then
         echo $SOURCE" does not exists." >&2
@@ -172,7 +181,7 @@ do
     -narrow $narrow > $filename
 
     filename=$reduced$file$extension
-    ./analyzer.byte -reduced $SOURCE$file -unroll $unroll -delay $delay \
+    ./analyzer.byte -parity-interval-reduction $SOURCE$file -unroll $unroll -delay $delay \
     -narrow $narrow > $filename
 
     filename=$parity$file$extension

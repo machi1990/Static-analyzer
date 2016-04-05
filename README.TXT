@@ -58,3 +58,19 @@ d'intervalle surtout quand l'intervalle contient des bornes négatives etc.
 
 3.4: Analyse des boucles.
 =========================
+
+
+3.5: Produit reduit
+===================
+Cette implementation est réalisé de sorte qu'elle soit un functeur générique.
+L'on peut en ainsi fait des produit des autres domaines abstraites que le
+produit de parité et intervalle dont son implementation concrete est dans le fichier
+"parity_interval_reduction.ml".
+
+PS: Nous avons du ajouter une signature "value: t -> interval_value", qui étant
+donné une domaine abstraite de type t, nous créera une interval d'entier: On peut
+voir cette signature comme étant un accesseur des bornes d'intervalles.
+
+Pour tester cette implementation, nous avons ajouté l'option "-parity-interval-reduction".
+
+ 
