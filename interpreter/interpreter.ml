@@ -6,7 +6,7 @@
 *)
 
 
-(* 
+(*
   Abstract interpreter by induction on the syntax.
   Parameterized by an abstract domain.
 *)
@@ -54,7 +54,7 @@ let fatal_error ext s =
 
 
 (* an interpreter only exports a single function, which does all the work *)
-module type INTERPRETER = 
+module type INTERPRETER =
 sig
   (* analysis of a program, given its abstract syntax tree *)
   val eval_prog: prog-> unit
@@ -66,7 +66,7 @@ end
 (* *********** *)
 
 
-(* the interpreter is parameterized by the choice of a domain D 
+(* the interpreter is parameterized by the choice of a domain D
    of signature Domain.DOMAIN
  *)
 
@@ -78,7 +78,7 @@ module Interprete(D : DOMAIN) =
    *)
   type t = D.t
 
-        
+
   (* utility function to reduce the compexity of testing boolean expressions;
      it handles the boolean operators &&, ||, ! internally, by induction
      on the syntax, and call the domain's function D.compare, to handle
@@ -93,15 +93,15 @@ module Interprete(D : DOMAIN) =
     let rec doit a (e,x) r = match e with
 
     (* boolean part, handled recursively *)
-    | AST_bool_unary (AST_NOT, e) -> 
+    | AST_bool_unary (AST_NOT, e) ->
         doit a e (not r)
     | AST_bool_binary (AST_AND, e1, e2) ->
         (if r then D.meet else D.join) (doit a e1 r) (doit a e2 r)
-    | AST_bool_binary (AST_OR, e1, e2) -> 
+    | AST_bool_binary (AST_OR, e1, e2) ->
         (if r then D.join else D.meet) (doit a e1 r) (doit a e2 r)
     | AST_bool_const b ->
         if b = r then a else D.bottom ()
-          
+
     (* arithmetic comparison part, handled by D *)
     | AST_compare (cmp, (e1,_), (e2,_)) ->
         (* utility function to negate the comparison, when r=false *)
@@ -120,11 +120,11 @@ module Interprete(D : DOMAIN) =
     doit a e r
 
 
-   
-	(*TODO narrowing*)		   
+
+	(*TODO narrowing*)
   (* interprets a statement, by induction on the syntax *)
-  let rec eval_stat (a:t) ((s,ext):stat ext) : t = 
-    let r = match s with    
+  let rec eval_stat (a:t) ((s,ext):stat ext) : t =
+    let r = match s with
 
     | AST_block (decl,inst) ->
         (* add the local variables *)
@@ -139,32 +139,32 @@ module Interprete(D : DOMAIN) =
         List.fold_left
           (fun a ((_,v),_) -> D.del_var a v)
           a decl
-        
+
     | AST_assign ((i,_),(e,_)) ->
         (* assigment is delegated to the domain *)
         D.assign a i e
-          
+
     | AST_if (e,s1,Some s2) ->
         (* compute both branches *)
         let t = eval_stat (filter a e true ) s1 in
         let f = eval_stat (filter a e false) s2 in
         (* then join *)
         D.join t f
-          
+
     | AST_if (e,s1,None) ->
         (* compute both branches *)
         let t = eval_stat (filter a e true ) s1 in
         let f = filter a e false in
         (* then join *)
         D.join t f
-          
+
     | AST_while (e,s) ->
      	let unroll = ref !loop_unrolling and
 					delay = ref !widen_delay and
 					narrowing = ref !narrowing_value in
-						
-				(* simple fixpoint *)	
-        let rec fix (f:t -> t) (x:t) : t = 
+
+				(* simple fixpoint *)
+        let rec fix (f:t -> t) (x:t) : t =
           let fx = f x in
           if D.subset fx x then fx
           else fix f fx
@@ -173,12 +173,12 @@ module Interprete(D : DOMAIN) =
            F(X(n+1)) = X(0) U body(F(X(n)
            we apply the loop body and add back the initial abstract state
          *)
-				let f x = 
+				let f x =
 					let evaluated = (eval_stat (filter x e true) s) in
 					if !unroll = 0 then (
 					if !delay = 0 then
 							let widened = D.widen x evaluated in
-							if !narrowing = 0 then widened 
+							if !narrowing = 0 then widened
 							else (
 									narrowing := !narrowing - 1;
 									D.narrow evaluated x;
@@ -186,16 +186,16 @@ module Interprete(D : DOMAIN) =
 					else (
 						delay := !delay - 1;
 						D.join x evaluated
-					)) else ( 
+					)) else (
 						unroll := !unroll - 1;
 						evaluated
-						) in 
+						) in
         (* compute fixpoint from the initial state (i.e., a loop invariant) *)
          let inv = fix f a in
 					filter inv e false
 
     | AST_assert (e,p) ->
-				let filtered = filter a (e,p) false in 
+				let filtered = filter a (e,p) false in
 				if not (D.is_bottom filtered) then (error p "Assertion error!");
 				filter a (e,p) true
     | AST_print l ->
@@ -205,19 +205,19 @@ module Interprete(D : DOMAIN) =
           (string_of_extent ext) (fun fmt v -> D.print fmt a v) l';
         (* then, return the original element unchanged *)
         a
-          
+
     | AST_HALT ->
         (* after halt, there are no more environments *)
         D.bottom ()
-          
+
     in
-    
+
     (* tracing, useful for debugging *)
-    if !trace then 
-      Format.printf "stat trace: %s: %a@\n" 
+    if !trace then
+      Format.printf "stat trace: %s: %a@\n"
         (string_of_extent ext) D.print_all r;
     r
-      
+
 
   (* entry-point of the program analysis *)
   let rec eval_prog (l:prog) : unit =
@@ -226,5 +226,5 @@ module Interprete(D : DOMAIN) =
     (* nothing useful to return *)
 	  ()
 
-      
+
 end : INTERPRETER)

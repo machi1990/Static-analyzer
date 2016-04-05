@@ -4,6 +4,13 @@ EXPLANATION DE NOS OBSERVATION, RESULTATS ET IMPLEMENTATION.
 Le dossier "tests/observation" contient quelques tests que nous avons écrit au
 fur et mésur de notre implementation.
 
+Pour génerer le fichier résultat de tout le banc de tests exécuter le script
+"run.sh". Pour ce faire, il faut d'abord vérifier que toutes dependances comme
+indiquées dans le fichie INSTALL.txt soient satisfaites.
+
+Sous terminal d'UNIX, la commande "bash run.sh -h", vous proposera une guide
+d'utilisation.
+
 3.1.1. OBSERVATION
 =================
     1) L'instruction rand(l,h) genere une suite de d'entiers entre l et h si l
@@ -48,17 +55,78 @@ En effet cet module nous offre déjà une implementation d'entiers plus le moins
 infinie. (Z inclus dans Q). Et donc, nous avons representé nos bornes d'intervalle
 comme un nombre dans Q. Avec cette implementation nous avons réussi à avoir les meme
 résulats attendu par l'analyseur. Nous offrons l'option "-interval" pour tester
-notre implementation. En terme de compairision, cette peut nous envoyer un résulat
-pas assez précis vue qu'il ya des cas qui s'est revelé presque impossible de traiter.
+notre implementation. En terme de comparaison, cette peut nous envoyer un résulat
+pas assez précis vue qu'il y a des cas qui s'est revelé presque impossible de traiter.
 Par exemple, la non-égalité de deux intervalles où le premier intervalle est
-totalement sous-ensemble de l'autres. i.e soit i1 = [a,b] et i2 = [c,d], si c < a et
+totalement un sous-ensemble de l'autre i.e soit i1 = [a,b] et i2 = [c,d], si c < a et
 b < d, alors i1 est totalement inclus dans i2, et dans ce cas notre implementation
 se comportera comme l'identité. Nous avons aussi une petite imprécision pour le module
-d'intervalle surtout quand l'intervalle contient des bornes négatives etc.
+d'intervalle surtout quand l'intervalle contient des bornes négatives.
 
 3.4: Analyse des boucles.
 =========================
+Le traitement des boucles dans intepreter.ml tel qu'il était, risquait de prendre
+beaucoup du temps avant qu'on trouve un point fixe: Un risque d'une convergence
+assez précis mais pas assez rapide.
 
+Pour pariér à cela, et ainsi avoir une convergence dans un temps raisonnable, nous
+avons utilé l'operateur de "widening". Le probleme avec cet operateur, est qu'il
+apporte une perte de précision et ainsi d'autres option comme "-delay N" pour
+l'utilisation tardive de "widening" normallement aprés "N" iteration, et "unroll N"
+pour l'evaluation de la boucle normale "sans faire de joining de widen" pour les "N"
+premier iterations. Ce deuxieme nous apporte une bonne précision par rapport à delay,
+vue qu'il s'agit d'une "simulation" d'evaluation la boucle dans le domaine, et ainsi
+la boucle est exécuté avec les valeur précises. Par example, pour le fichier
+"tests/0400_loop.c", nous avons:
+tests/0400_loop.c:5.4-13: [ x in [0;0] ]
+tests/0400_loop.c:5.4-13: [ x in [1;1] ]
+tests/0400_loop.c:5.4-13: [ x in [2;2] ]
+tests/0400_loop.c:5.4-13: [ x in [3;3] ]
+tests/0400_loop.c:5.4-13: [ x in [4;4] ]
+tests/0400_loop.c:5.4-13: [ x in [5;5] ]
+tests/0400_loop.c:5.4-13: [ x in [6;6] ]
+tests/0400_loop.c:5.4-13: [ x in [7;7] ]
+tests/0400_loop.c:5.4-13: [ x in [8;8] ]
+tests/0400_loop.c:5.4-13: [ x in [9;9] ]
+tests/0400_loop.c:5.4-13: [ x in [9;49] ]
+
+pour unroll=9 et delay= 0 mais par contre pour delay=9 et unroll=0, nous avons
+tests/0400_loop.c:5.4-13: [ x in [0;0] ]
+tests/0400_loop.c:5.4-13: [ x in [1;1] ]
+tests/0400_loop.c:5.4-13: [ x in [2;2] ]
+tests/0400_loop.c:5.4-13: [ x in [3;3] ]
+tests/0400_loop.c:5.4-13: [ x in [3;4] ]
+tests/0400_loop.c:5.4-13: [ x in [3;5] ]
+tests/0400_loop.c:5.4-13: [ x in [3;6] ]
+tests/0400_loop.c:5.4-13: [ x in [3;7] ]
+tests/0400_loop.c:5.4-13: [ x in [3;8] ]
+tests/0400_loop.c:5.4-13: [ x in [3;9] ]
+tests/0400_loop.c:5.4-13: [ x in [3;10] ]
+tests/0400_loop.c:5.4-13: [ x in [3;11] ]
+tests/0400_loop.c:5.4-13: [ x in [3;12] ]
+tests/0400_loop.c:5.4-13: [ x in [3;49] ].
+
+Dans cette partie aussi, il s'agissait d'implementer le narrowing de la boucle pour
+gagner en précision après l'utilisation de widening. Pour cela, nous avons ajouté
+l'option "-narrow N".
+Pour narrow=9 et delay=0 et unroll=0, nous avons ce résulat pour le meme fichier.
+tests/0400_loop.c:5.4-13: [ x in [0;0] ]
+tests/0400_loop.c:5.4-13: [ x in [1;1] ]
+tests/0400_loop.c:5.4-13: [ x in [2;2] ]
+tests/0400_loop.c:5.4-13: [ x in [3;3] ]
+tests/0400_loop.c:5.4-13: [ x in [4;4] ]
+tests/0400_loop.c:5.4-13: [ x in [5;5] ]
+tests/0400_loop.c:5.4-13: [ x in [6;6] ]
+tests/0400_loop.c:5.4-13: [ x in [7;7] ]
+tests/0400_loop.c:5.4-13: [ x in [8;8] ]
+tests/0400_loop.c:5.4-13: [ x in [9;9] ]
+tests/0400_loop.c:5.4-13: [ x in [10;10] ]
+tests/0400_loop.c:5.4-13: [ x in [11;11] ]
+tests/0400_loop.c:5.4-13: [ x in [12;12] ]
+tests/0400_loop.c:5.4-13: [ x in [12;49] ].
+
+Pour cette partie, nous pensons à faire une ameration vue quelques bougues rencontrés
+au fur et mésur de nos tests.
 
 3.5: Produit reduit
 ===================
@@ -73,4 +141,10 @@ voir cette signature comme étant un accesseur des bornes d'intervalles.
 
 Pour tester cette implementation, nous avons ajouté l'option "-parity-interval-reduction".
 
- 
+4: Extensions (Analyse disjonctive).
+===================================
+Comme extension pour notre analyseur nous avons choisi d'implementer le
+partitionement de trace. Cette implementation se porte comme une autre module pour
+l'intepretation. Toute details d'implementation se trouve dans le fichier
+"trace_interpreter.ml", et nous avons ajouté une option "-partition" pour tester
+cette implementation pour le domaine d'intervalle.
