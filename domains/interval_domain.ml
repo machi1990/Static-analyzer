@@ -91,12 +91,7 @@ module Intervals = (struct
 
   let sub i i1 =
 		match i,i1 with
-		| Interval(a,b), Interval(c,d) ->
-			let (e,g) = (Q.sub a c), (Q.sub b d) and
-					(k,l) = (Q.sub a d),(Q.sub b c) in
-					let max_ = Q.max e (Q.max g (Q.max k l)) and
-							min_ = Q.min e (Q.min g (Q.min k l)) in
-			Interval(min_,max_)
+		| Interval(a,b), Interval(c,d) -> Interval (Q.sub a d, Q.sub b c)
 		| _ -> BOT
 
 
@@ -309,7 +304,7 @@ module Intervals = (struct
   let print fmt x = match x with
   | BOT -> Format.fprintf fmt "bottom"
   | TOP -> Format.fprintf fmt "top"
-  |Interval (x,x1) -> Format.fprintf fmt "{%s}" (to_string x ^ "," ^ to_string x1)
+  |Interval (x,x1) -> Format.fprintf fmt "[%s]" (to_string x ^ ";" ^ to_string x1)
 
 
   (* operator dispatch *)
