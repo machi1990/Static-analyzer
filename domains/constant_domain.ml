@@ -118,30 +118,25 @@ module Constants = (struct
 
 
   (* comparison operations (filters) *)
- (* TODO *)
   let eq a b =
-    (* this is not very precise, how can we improve it ? *)
     match a,b with
 		| Cst x, Cst y -> if Z.equal x y then a,b else BOT,BOT
-		| BOT,x | x,BOT -> a,BOT
-		| _ -> a,b
+		| BOT,x | x,BOT -> BOT,BOT
+		| x,TOP | TOP,x -> x,x
 
   let neq a b =
     match a,b with
 		| Cst x, Cst y -> if not(Z.equal x y) then a,b else BOT,BOT
-		| BOT,x | x,BOT -> a,BOT
 		| _ -> a,b
 
   let geq a b =
     match a,b with
 		| Cst x, Cst y -> if Z.geq x y then a,b else BOT,BOT
-		| BOT,x | x,BOT -> a,BOT
 		| _ -> a,b
 
   let gt a b =
     match a,b with
 		| Cst x, Cst y -> if Z.gt x y then a,b else BOT,BOT
-		| BOT,x | x,BOT -> a,BOT
 		| _ -> a,b
 
 
