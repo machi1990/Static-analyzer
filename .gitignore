@@ -10,3 +10,4 @@ frontend/lexer.ml
 frontend/parser.ml
 frontend/parser.mli
 *.byte
+/result

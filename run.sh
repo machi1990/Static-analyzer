@@ -37,19 +37,19 @@ echo "Starts analysis of: "$DIR$file
 ./analyzer.byte -interval $DIR$file -unroll 3 > $filename
 
 filename=$constant$file$TXT
-./analyzer.byte -interval $DIR$file -unroll 3 > $filename
+./analyzer.byte -constant $DIR$file -unroll 3 > $filename
 
 filename=$reduced$file$TXT
-./analyzer.byte -interval $DIR$file -unroll 3 > $filename
+./analyzer.byte -reduced $DIR$file -unroll 3 > $filename
 
 filename=$parity$file$TXT
-./analyzer.byte -interval $DIR$file -unroll 3 > $filename
+./analyzer.byte -parity $DIR$file -unroll 3 > $filename
 
 filename=$partition_interval$file$TXT
-./analyzer.byte -interval $DIR$file -unroll 3 > $filename
+./analyzer.byte -partition-interval $DIR$file -unroll 3 > $filename
 
 filename=$partition_constant$file$TXT
-./analyzer.byte -interval $DIR$file -unroll 3 > $filename
+./analyzer.byte -partition-constant $DIR$file -unroll 3 > $filename
 
 echo "Analysis of: "$DIR$file" finished."
 echo " "
