@@ -158,8 +158,7 @@ module Intervals = (struct
 		| _ -> BOT
 
 					 					
-	(* TODO see make_mod*)
-  let modulo i i1 =  
+	let modulo i i1 =  
 		match i,i1 with
 		| Interval(a,b), Interval(c,d) -> (
 			let pos = Interval (Q.one, Q.inf) and neg_ = Interval (Q.minus_inf,Q.minus_one) 
