@@ -19,7 +19,7 @@ help_ () {
     echo "-n N                    N iterations for loop's fixed point narrowing."
     echo "-h                      Print this message."
     echo " "
-    echo "This script targets Unix's OS."
+    echo "This script targets Unix OSs and their derivatives."
     echo "Report bugs to Manyanda Chitimbo <chitson1990@gmail.com>."
     exit 1
 }
