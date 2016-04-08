@@ -77,56 +77,30 @@ pour l'evaluation de la boucle normale "sans faire de joining de widen" pour les
 premier iterations. Ce deuxieme nous apporte une bonne précision par rapport à delay,
 vue qu'il s'agit d'une "simulation" d'evaluation la boucle dans le domaine, et ainsi
 la boucle est exécuté avec les valeur précises. Par example, pour le fichier
-"tests/0400_loop.c", nous avons:
-tests/0400_loop.c:5.4-13: [ x in [0;0] ]
-tests/0400_loop.c:5.4-13: [ x in [1;1] ]
-tests/0400_loop.c:5.4-13: [ x in [2;2] ]
-tests/0400_loop.c:5.4-13: [ x in [3;3] ]
-tests/0400_loop.c:5.4-13: [ x in [4;4] ]
-tests/0400_loop.c:5.4-13: [ x in [5;5] ]
-tests/0400_loop.c:5.4-13: [ x in [6;6] ]
-tests/0400_loop.c:5.4-13: [ x in [7;7] ]
-tests/0400_loop.c:5.4-13: [ x in [8;8] ]
-tests/0400_loop.c:5.4-13: [ x in [9;9] ]
-tests/0400_loop.c:5.4-13: [ x in [9;49] ]
+"tests/observation/loop_3.c", nous avons:
+tests/observation/loop_3.c:7.8-17: [ x in [0;0] ]
+tests/observation/loop_3.c:7.8-17: [ x in [1;1] ]
+tests/observation/loop_3.c:7.8-17: [ x in [2;2] ]
+tests/observation/loop_3.c:7.8-17: [ x in [3;3] ]
+tests/observation/loop_3.c:7.8-17: [ x in [3;64] ]
+tests/observation/loop_3.c:11.4-13: [ x in [65;+inf] ]
 
-pour unroll=9 et delay= 0 mais par contre pour delay=9 et unroll=0, nous avons
-tests/0400_loop.c:5.4-13: [ x in [0;0] ]
-tests/0400_loop.c:5.4-13: [ x in [1;1] ]
-tests/0400_loop.c:5.4-13: [ x in [2;2] ]
-tests/0400_loop.c:5.4-13: [ x in [3;3] ]
-tests/0400_loop.c:5.4-13: [ x in [3;4] ]
-tests/0400_loop.c:5.4-13: [ x in [3;5] ]
-tests/0400_loop.c:5.4-13: [ x in [3;6] ]
-tests/0400_loop.c:5.4-13: [ x in [3;7] ]
-tests/0400_loop.c:5.4-13: [ x in [3;8] ]
-tests/0400_loop.c:5.4-13: [ x in [3;9] ]
-tests/0400_loop.c:5.4-13: [ x in [3;10] ]
-tests/0400_loop.c:5.4-13: [ x in [3;11] ]
-tests/0400_loop.c:5.4-13: [ x in [3;12] ]
-tests/0400_loop.c:5.4-13: [ x in [3;49] ].
+pour unroll=3 et delay= 0 mais par contre pour delay=3 et unroll=0, nous avons
+tests/observation/loop_3.c:7.8-17: [ x in [0;0] ]
+tests/observation/loop_3.c:7.8-17: [ x in [1;1] ]
+tests/observation/loop_3.c:7.8-17: [ x in [1;2] ]
+tests/observation/loop_3.c:7.8-17: [ x in [1;3] ]
+tests/observation/loop_3.c:7.8-17: [ x in [1;4] ]
+tests/observation/loop_3.c:7.8-17: [ x in [1;64] ]
+tests/observation/loop_3.c:11.4-13: [ x in [65;+inf] ]
 
 Dans cette partie aussi, il s'agissait d'implementer le narrowing de la boucle pour
 gagner en précision après l'utilisation de widening. Pour cela, nous avons ajouté
 l'option "-narrow N".
-Pour narrow=9 et delay=0 et unroll=0, nous avons ce résulat pour le meme fichier.
-tests/0400_loop.c:5.4-13: [ x in [0;0] ]
-tests/0400_loop.c:5.4-13: [ x in [1;1] ]
-tests/0400_loop.c:5.4-13: [ x in [2;2] ]
-tests/0400_loop.c:5.4-13: [ x in [3;3] ]
-tests/0400_loop.c:5.4-13: [ x in [4;4] ]
-tests/0400_loop.c:5.4-13: [ x in [5;5] ]
-tests/0400_loop.c:5.4-13: [ x in [6;6] ]
-tests/0400_loop.c:5.4-13: [ x in [7;7] ]
-tests/0400_loop.c:5.4-13: [ x in [8;8] ]
-tests/0400_loop.c:5.4-13: [ x in [9;9] ]
-tests/0400_loop.c:5.4-13: [ x in [10;10] ]
-tests/0400_loop.c:5.4-13: [ x in [11;11] ]
-tests/0400_loop.c:5.4-13: [ x in [12;12] ]
-tests/0400_loop.c:5.4-13: [ x in [12;49] ].
 
-Pour cette partie, nous pensons à faire une ameration vue quelques bougues rencontrés
-au fur et mésur de nos tests.
+Nous voyons bien que si nous ajoutons une iteration de decroissante, pour le meme fichier tests 
+la valeur finale d'intervalle affiché correspond bien à une valeer qu'on s'attendait au premier vu: 
+[x in [65;65] ].
 
 3.5: Produit reduit
 ===================

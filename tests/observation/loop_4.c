@@ -1,11 +1,11 @@
 {
     int x;
     
-    x = 0;
+    x = rand(1,50);
     
-    while (x < 65) {
+    while (x >= 0) {
         print(x);
-        x = x + 1;
+        x = x - 1;
     }
     
     print(x);
