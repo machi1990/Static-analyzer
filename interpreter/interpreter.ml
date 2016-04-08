@@ -162,7 +162,7 @@ module Interprete(D : DOMAIN) =
      	let unroll = ref !loop_unrolling and
 					delay = ref !widen_delay and
 					narrowing = ref !narrowing_value in
-
+				
 				(* simple fixpoint *)
         let rec fix (f:t -> t) (x:t) : t =
           let fx = f x in
@@ -175,13 +175,13 @@ module Interprete(D : DOMAIN) =
          *)
 				let f x =
 					let evaluated = (eval_stat (filter x e true) s) in
-					if !unroll = 0 then (
-					if !delay = 0 then
+					if !unroll <= 0 then (
+					if !delay <= 0 then
 							let widened = D.widen x evaluated in
-							if !narrowing = 0 then widened
+							if !narrowing <= 0 then widened
 							else (
 									narrowing := !narrowing - 1;
-									D.narrow evaluated x;
+									eval_stat (filter widened e true) s;
 							)
 					else (
 						delay := !delay - 1;
