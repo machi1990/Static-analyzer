@@ -170,7 +170,7 @@ module Intervals = (struct
   let widen i i1 =
 		match i,i1 with
 		| Interval(a,b), Interval(c,d) ->
-			let min_ = if Q.gt c a then a else Q.minus_inf
+			let min_ = if Q.gt a c then Q.minus_inf else a
 			and max_ = if Q.geq b d then b else Q.inf
 			in Interval(min_,max_)
 		| BOT,x | x,BOT -> x
