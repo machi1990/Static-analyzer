@@ -5,18 +5,19 @@ sf_present=false
 rf_present=false
 
 # read the options"
-delay=0
+delay=3
 unroll=3
-narrow=0
+narrow=1
+minus_one=-1
 
 help_ () {
     echo "Usage: [options] [argument] ..."
     echo "Options: "
     echo "-s Name                 Folder's name where source files are located. Required option."
     echo "-r Name                 Result's folder name. Required option."
-    echo "-d N                    N iterations for loop's widening delay."
-    echo "-u N                    N iterations for loop unrolling."
-    echo "-n N                    N iterations for loop's fixed point narrowing."
+    echo "-d N                    N iterations for loop's widening delay. Default value is 3."
+    echo "-u N                    N iterations for loop unrolling. Default value is 3."
+    echo "-n N                    N iterations for loop's fixed point narrowing. Default value is 1."
     echo "-h                      Print this message."
     echo " "
     echo "This script targets Unix OSs and their derivatives."
@@ -34,21 +35,21 @@ options=":d:,:u:,:n:,h,:s:,:r:"
 while getopts $options opt; do
     case $opt in
     d)
-        if [ "$OPTARG" -gt "$delay" ]
+        if [ "$OPTARG" -gt "$minus_one" ]
         then
             delay=$(echo "$OPTARG" | bc)
         fi
           ;;
 
     u)
-        if [ "$OPTARG" -gt "$unroll" ]
+        if [ "$OPTARG" -gt "$minus_one" ]
         then
             unroll=$(echo "$OPTARG" | bc)
         fi
         ;;
 
     n)
-        if [ "$OPTARG" -gt "$narrow" ]
+        if [ "$OPTARG" -gt "$minus_one" ]
         then
             narrow=$(echo "$OPTARG" | bc)
         fi
