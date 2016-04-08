@@ -98,9 +98,9 @@ Dans cette partie aussi, il s'agissait d'implementer le narrowing de la boucle p
 gagner en précision après l'utilisation de widening. Pour cela, nous avons ajouté
 l'option "-narrow N".
 
-Nous voyons bien que si nous ajoutons une iteration de decroissante, pour le meme fichier tests 
-la valeur finale d'intervalle affiché correspond bien à une valeer qu'on s'attendait au premier vu: 
-[x in [65;65] ].
+NB: Vue quelques imprécesion remarquées lors de nos tests, cette partie (de narrowing) est 
+	encore en revue totale. 
+
 
 3.5: Produit reduit
 ===================
