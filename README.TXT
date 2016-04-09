@@ -95,8 +95,9 @@ tests/observation/loop_3.c:7.8-17: [ x in [1;64] ]
 tests/observation/loop_3.c:11.4-13: [ x in [65;+inf] ]
 
 Dans cette partie aussi, il s'agissait d'implementer le narrowing de la boucle pour
-gagner en précision après l'utilisation de widening. Pour cela, nous avons ajouté
-l'option "-narrow N".
+gagner en précision (raffiné le point fixe par un op éerateur de rétréecissement permet 
+de forcer la convergence en temps fini) après l'utilisation de widening. Pour cela, nous
+avons ajouté l'option "-narrow N".
 
 NB: Vue quelques imprécesion remarquées lors de nos tests, cette partie (de narrowing) est 
 	encore en revue totale. 
