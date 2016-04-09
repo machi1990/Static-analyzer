@@ -28,7 +28,7 @@ let trace = ref false
 let widen_delay = ref 3
 
 (* widening delay *)
-let narrowing_value = ref 1
+let narrowing_value = ref 0
 
 (* loop unrolling *)
 let loop_unrolling = ref 0
@@ -181,7 +181,7 @@ module Interprete(D : DOMAIN) =
 							if !narrowing <= 0 then widened
 							else (
 									narrowing := !narrowing - 1;
-									D.narrow evaluated x
+									D.narrow x widened 
 							)
 					else (
 						delay := !delay - 1;
