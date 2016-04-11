@@ -162,20 +162,24 @@ module Trace_Interprete(D : DOMAIN) =
       in
 			
 			let f h delay unroll narrowing = 
-				let doit x key = let evaluated =  (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty) s) in	
-				if unroll = 0 then ( if delay = 0 then 
-						let widened = PATH.map (fun m -> D.widen x m) evaluated in
-						if narrowing = 0 then widened else (
-							PATH.mapi (fun k v -> D.narrow v (find k widened)) evaluated
-						) else (
-  					PATH.map (fun m -> D.join x m) evaluated )) 
-					else ( 
-  					evaluated
-					) in let res = if PATH.mem bottom_key h then doit (find bottom_key h) bottom_key else PATH.empty in 
-						let res = if PATH.mem false_key h then (
-							let doneit = doit ( find false_key h) false_key in append_map_to doneit res 
+				let doit x key = 
+					let evaluated =  (eval_stat_paths ( PATH.add key (filter x e true) PATH.empty) s) in	
+    				if unroll = 0 then ( 
+							if delay = 0 then 
+    						let widened = PATH.map (fun m -> D.widen x m) evaluated in
+    						if narrowing = 0 then widened else (
+    							PATH.mapi (fun k v -> D.narrow v (find k widened)) evaluated
+    						) else (
+      					PATH.map (fun m -> D.join x m) evaluated )) 
+    					else ( 
+      					evaluated
+    					) 
+					in let res = if PATH.mem bottom_key h then doit (find bottom_key h) bottom_key else PATH.empty in 
+					let res = if PATH.mem false_key h then (
+						let doneit = doit ( find false_key h) false_key in append_map_to doneit res 
 					) else res in let res = if PATH.mem true_key h then let doneit = doit (find true_key h) true_key 
-					in append_map_to doneit res else res in res in let inv = fix f history !loop_unrolling !widen_delay !narrowing_value 
+					in append_map_to doneit res else res in res 
+					in let inv = fix f history !widen_delay !loop_unrolling !narrowing_value 
 					in let filtered = PATH.add bottom_key (filter (find bottom_key inv) e false) PATH.empty in
 					let filtered = if PATH.mem true_key inv then PATH.add true_key (filter (find true_key inv) e false) filtered else filtered 
 					in if PATH.mem false_key inv then PATH.add false_key (filter (find false_key inv) e false) filtered else filtered
