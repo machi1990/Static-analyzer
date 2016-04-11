@@ -1,0 +1,1 @@
+tests/0026_copy.c:7.4-13: [ y in Pair [12;12] ]

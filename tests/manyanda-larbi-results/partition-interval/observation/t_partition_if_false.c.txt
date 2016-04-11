@@ -1,0 +1,3 @@
+tests/observation/t_partition_if_false.c:12.4-15  BOTTOM: [ x in [2;2], y in [1;1] ]
+tests/observation/t_partition_if_false.c:12.4-15  FALSE: [ x in [2;2], y in [1;1] ]
+tests/observation/t_partition_if_false.c:12.4-15  TRUE: bottom

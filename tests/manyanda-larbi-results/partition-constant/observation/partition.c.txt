@@ -1,0 +1,6 @@
+tests/observation/partition.c:11.4-13  BOTTOM: [ x in top ]
+tests/observation/partition.c:11.4-13  FALSE: [ x in top ]
+tests/observation/partition.c:11.4-13  TRUE: [ x in top ]
+tests/observation/partition.c:17.4-13  BOTTOM: [ x in top ]
+tests/observation/partition.c:17.4-13  FALSE: [ x in top ]
+tests/observation/partition.c:17.4-13  TRUE: [ x in top ]

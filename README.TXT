@@ -11,6 +11,8 @@ indiquées dans le fichie INSTALL.txt soient satisfaites.
 Sous terminal d'UNIX, la commande "bash run.sh -h", vous proposera une guide
 d'utilisation.
 
+Les résultats de notre analyse se trouve dans le dossir "tests/manyanda-larbi-results".
+
 3.1.1. OBSERVATION
 =================
     1) L'instruction rand(l,h) genere une suite de d'entiers entre l et h si l
@@ -77,7 +79,7 @@ pour l'evaluation de la boucle normale "sans faire de joining de widen" pour les
 premier iterations. Ce deuxieme nous apporte une bonne précision par rapport à delay,
 vue qu'il s'agit d'une "simulation" d'evaluation la boucle dans le domaine, et ainsi
 la boucle est exécuté avec les valeur précises. Par example, pour le fichier
-"tests/observation/loop_3.c", nous avons:
+"tests/observation/loop_3.c", nous avons , pour unroll=3 et delay= 0 le résultat suivant:
 tests/observation/loop_3.c:7.8-17: [ x in [0;0] ]
 tests/observation/loop_3.c:7.8-17: [ x in [1;1] ]
 tests/observation/loop_3.c:7.8-17: [ x in [2;2] ]
@@ -85,7 +87,7 @@ tests/observation/loop_3.c:7.8-17: [ x in [3;3] ]
 tests/observation/loop_3.c:7.8-17: [ x in [3;64] ]
 tests/observation/loop_3.c:11.4-13: [ x in [65;+inf] ]
 
-pour unroll=3 et delay= 0 mais par contre pour delay=3 et unroll=0, nous avons
+Par contre pour delay=3 et unroll=0, nous avons:
 tests/observation/loop_3.c:7.8-17: [ x in [0;0] ]
 tests/observation/loop_3.c:7.8-17: [ x in [1;1] ]
 tests/observation/loop_3.c:7.8-17: [ x in [1;2] ]
@@ -95,13 +97,13 @@ tests/observation/loop_3.c:7.8-17: [ x in [1;64] ]
 tests/observation/loop_3.c:11.4-13: [ x in [65;+inf] ]
 
 Dans cette partie aussi, il s'agissait d'implementer le narrowing de la boucle pour
-gagner en précision (raffiné le point fixe par un op éerateur de rétréecissement permet 
+gagner en précision (raffiné le point fixe par un opérateur de rétréecissement permet 
 de forcer la convergence en temps fini) après l'utilisation de widening. Pour cela, nous
-avons ajouté l'option "-narrow N".
+avons ajouté l'option "-narrow N". Cette option fera n iteration de la boucle en
+appliquant l'operation de narrowing à chaque tour de boucle.
 
 NB: Vue quelques imprécesion remarquées lors de nos tests, cette partie (de narrowing) est 
 	encore en revue totale. 
-
 
 3.5: Produit reduit
 ===================
@@ -118,8 +120,10 @@ Pour tester cette implementation, nous avons ajouté l'option "-parity-interval-
 
 4: Extensions (Analyse disjonctive).
 ===================================
-Comme extension pour notre analyseur nous avons choisi d'implementer le
-partitionement de trace. Cette implementation se porte comme une autre module pour
-l'intepretation. Toute details d'implementation se trouve dans le fichier
-"trace_interpreter.ml", et nous avons ajouté une option "-partition" pour tester
-cette implementation pour le domaine d'intervalle.
+Comme extension pour notre analyseur nous avons choisi d'implementer l'anaylse disjonctive par 
+partitionement de trace. Cette implementation se porte comme une autre module pour l'intepretation. 
+Toute details d'implementation se trouve dans le fichier "trace_interpreter.ml", et nous avons ajouté 
+une option "-partition-interval" et "partition-constant" pour tester cette implementation pour 
+les domaine d'intervalle et constantes respectivement.
+
+

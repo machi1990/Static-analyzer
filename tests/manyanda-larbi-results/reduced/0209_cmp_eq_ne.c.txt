@@ -1,0 +1,2 @@
+tests/0209_cmp_eq_ne.c:6.14-25: [ x in Pair [10;10], y in Pair [10;10] ]
+tests/0209_cmp_eq_ne.c:7.7-18: [ x in Impair [11;15], y in Pair [10;10] ]

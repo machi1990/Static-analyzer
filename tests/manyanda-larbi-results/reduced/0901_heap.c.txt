@@ -1,0 +1,2 @@
+tests/0901_heap.c:23.11-27: ERROR: Assertion error!
+tests/0901_heap.c:27.11-27: ERROR: Assertion error!

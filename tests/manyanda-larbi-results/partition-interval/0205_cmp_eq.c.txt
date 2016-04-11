@@ -1,0 +1,1 @@
+tests/0205_cmp_eq.c:6.14-25  BOTTOM: [ x in [15;20], y in [15;20] ]

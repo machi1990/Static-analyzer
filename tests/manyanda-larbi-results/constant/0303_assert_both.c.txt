@@ -1,0 +1,3 @@
+tests/0303_assert_both.c:4.9-14: ERROR: Assertion error!
+tests/0303_assert_both.c:5.9-15: ERROR: Assertion error!
+tests/0303_assert_both.c:6.2-11: [ x in top ]

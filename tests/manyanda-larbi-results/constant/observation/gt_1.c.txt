@@ -1,0 +1,4 @@
+tests/observation/gt_1.c:9.8-17: [ x in top ]
+tests/observation/gt_1.c:10.8-17: [ y in top ]
+tests/observation/gt_1.c:12.8-17: [ y in top ]
+tests/observation/gt_1.c:13.8-17: [ x in top ]

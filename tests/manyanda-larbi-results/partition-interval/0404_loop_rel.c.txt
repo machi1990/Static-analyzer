@@ -1,0 +1,6 @@
+tests/0404_loop_rel.c:7.4-15  BOTTOM: [ x in [0;0], N in [1;50] ]
+tests/0404_loop_rel.c:7.4-15  BOTTOM: [ x in [1;1], N in [2;50] ]
+tests/0404_loop_rel.c:7.4-15  BOTTOM: [ x in [2;2], N in [3;50] ]
+tests/0404_loop_rel.c:7.4-15  BOTTOM: [ x in [3;3], N in [4;50] ]
+tests/0404_loop_rel.c:7.4-15  BOTTOM: [ x in [4;49], N in [3;50] ]
+tests/0404_loop_rel.c:10.9-13: ERROR: Assertion error.

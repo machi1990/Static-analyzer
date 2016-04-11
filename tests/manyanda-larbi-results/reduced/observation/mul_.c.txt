@@ -1,0 +1,3 @@
+tests/observation/mul_.c:11.4-13: [ y in Top [-1;9] ]
+tests/observation/mul_.c:12.4-13: [ x in Pair [0;0] ]
+tests/observation/mul_.c:13.4-13: [ z in Pair [0;0] ]

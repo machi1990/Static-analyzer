@@ -1,0 +1,5 @@
+tests/observation/loop_3.c:7.8-17: [ x in Pair [0;0] ]
+tests/observation/loop_3.c:7.8-17: [ x in Impair [1;1] ]
+tests/observation/loop_3.c:7.8-17: [ x in Pair [2;2] ]
+tests/observation/loop_3.c:7.8-17: [ x in Impair [3;3] ]
+tests/observation/loop_3.c:11.4-13: bottom

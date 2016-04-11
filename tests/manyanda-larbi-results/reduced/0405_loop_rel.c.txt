@@ -1,0 +1,9 @@
+tests/0405_loop_rel.c:7.4-15: [ x in Pair [0;0], N in Top [1;50] ]
+tests/0405_loop_rel.c:7.4-15: [ x in Top [0;3], N in Top [1;50] ]
+tests/0405_loop_rel.c:7.4-15: [ x in Top [0;6], N in Top [1;50] ]
+tests/0405_loop_rel.c:7.4-15: [ x in Top [0;9], N in Top [1;50] ]
+tests/0405_loop_rel.c:7.4-15: [ x in Top [0;12], N in Top [1;50] ]
+tests/0405_loop_rel.c:7.4-15: [ x in Top [0;15], N in Top [1;50] ]
+tests/0405_loop_rel.c:7.4-15: [ x in Top [0;18], N in Top [1;50] ]
+tests/0405_loop_rel.c:7.4-15: [ x in Top [0;49], N in Top [1;50] ]
+tests/0405_loop_rel.c:10.9-22: ERROR: Assertion error!

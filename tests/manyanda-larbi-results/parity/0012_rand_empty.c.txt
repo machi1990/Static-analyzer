@@ -1,0 +1,1 @@
+tests/0012_rand_empty.c:4.2-11: bottom

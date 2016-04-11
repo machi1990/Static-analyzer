@@ -1,0 +1,6 @@
+tests/observation/loop_2.c:21.8-19: [ x in {1}, y in {1} ]
+tests/observation/loop_2.c:21.8-19: [ x in {2}, y in {2} ]
+tests/observation/loop_2.c:21.8-19: [ x in {3}, y in {3} ]
+tests/observation/loop_2.c:21.8-19: [ x in {4}, y in {4} ]
+tests/observation/loop_2.c:21.8-19: [ x in top, y in top ]
+tests/observation/loop_2.c:24.4-15: [ x in top, y in top ]

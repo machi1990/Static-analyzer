@@ -1,0 +1,2 @@
+tests/0107_if_var.c:4.16-25: [ x in Top [0;20] ]
+tests/0107_if_var.c:5.9-18: [ x in Top [-10;-1] ]

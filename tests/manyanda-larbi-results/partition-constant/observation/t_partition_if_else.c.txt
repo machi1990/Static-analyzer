@@ -1,0 +1,5 @@
+tests/observation/t_partition_if_else.c:10.8-19  BOTTOM: [ x in top, y in top ]
+tests/observation/t_partition_if_else.c:12.8-19  BOTTOM: [ x in top, y in top ]
+tests/observation/t_partition_if_else.c:17.4-13  BOTTOM: [ z in top ]
+tests/observation/t_partition_if_else.c:17.4-13  FALSE: [ z in top ]
+tests/observation/t_partition_if_else.c:17.4-13  TRUE: [ z in top ]

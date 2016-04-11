@@ -1,0 +1,3 @@
+tests/0104_else_false.c:5.2-11  BOTTOM: [ x in {10} ]
+tests/0104_else_false.c:5.2-11  FALSE: [ x in {10} ]
+tests/0104_else_false.c:5.2-11  TRUE: bottom

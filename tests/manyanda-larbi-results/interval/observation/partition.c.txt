@@ -1,0 +1,2 @@
+tests/observation/partition.c:11.4-13: [ x in [-25;70] ]
+tests/observation/partition.c:17.4-13: [ x in [50;50] ]

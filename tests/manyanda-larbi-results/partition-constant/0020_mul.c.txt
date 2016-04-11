@@ -1,0 +1,1 @@
+tests/0020_mul.c:4.2-11  BOTTOM: [ x in {40} ]

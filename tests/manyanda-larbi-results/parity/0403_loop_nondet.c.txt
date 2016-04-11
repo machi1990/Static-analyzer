@@ -1,0 +1,4 @@
+tests/0403_loop_nondet.c:5.4-13: [ x in Pair  ]
+tests/0403_loop_nondet.c:5.4-13: [ x in Impair  ]
+tests/0403_loop_nondet.c:5.4-13: [ x in Pair  ]
+tests/0403_loop_nondet.c:5.4-13: [ x in Impair  ]

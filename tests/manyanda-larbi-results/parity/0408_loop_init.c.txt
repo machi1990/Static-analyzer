@@ -1,0 +1,5 @@
+tests/0408_loop_init.c:13.11-17: ERROR: Assertion error!
+tests/0408_loop_init.c:13.11-17: ERROR: Assertion error!
+tests/0408_loop_init.c:13.11-17: ERROR: Assertion error!
+tests/0408_loop_init.c:13.11-17: ERROR: Assertion error!
+tests/0408_loop_init.c:13.11-17: ERROR: Assertion error!

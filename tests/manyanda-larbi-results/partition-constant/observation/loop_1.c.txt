@@ -1,0 +1,3 @@
+tests/observation/loop_1.c:17.4-15  BOTTOM: [ x in top, y in top ]
+tests/observation/loop_1.c:17.4-15  FALSE: [ x in top, y in top ]
+tests/observation/loop_1.c:17.4-15  TRUE: [ x in top, y in top ]

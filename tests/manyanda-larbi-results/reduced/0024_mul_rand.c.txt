@@ -1,0 +1,1 @@
+tests/0024_mul_rand.c:5.2-11: [ x in Pair [0;0] ]

@@ -1,0 +1,1 @@
+tests/0200_cmp_le.c:6.14-25  BOTTOM: [ x in [10;20], y in [15;30] ]

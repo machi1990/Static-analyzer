@@ -1,0 +1,2 @@
+tests/0008_noinit.c:3.2-11: [ x in {0} ]
+tests/0008_noinit.c:5.2-11: [ x in {2} ]

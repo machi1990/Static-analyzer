@@ -1,0 +1,3 @@
+tests/observation/mul_.c:11.4-13: [ y in top ]
+tests/observation/mul_.c:12.4-13: [ x in {0} ]
+tests/observation/mul_.c:13.4-13: [ z in {0} ]

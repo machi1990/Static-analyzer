@@ -1,0 +1,1 @@
+tests/0022_mul.c:5.2-11  BOTTOM: [ x in {0} ]

@@ -1,0 +1,5 @@
+tests/observation/modulo_1.c:10.8-17  BOTTOM: [ z in top ]
+tests/observation/modulo_1.c:14.8-17  BOTTOM: [ z in top ]
+tests/observation/modulo_1.c:21.4-13  BOTTOM: [ z in top ]
+tests/observation/modulo_1.c:21.4-13  FALSE: [ z in top ]
+tests/observation/modulo_1.c:21.4-13  TRUE: [ z in top ]

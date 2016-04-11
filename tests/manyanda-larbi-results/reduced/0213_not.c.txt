@@ -1,0 +1,2 @@
+tests/0213_not.c:6.27-38: [ x in Top [10;20], y in Top [30;40] ]
+tests/0213_not.c:7.9-20: [ x in Top [15;20], y in Top [30;34] ]

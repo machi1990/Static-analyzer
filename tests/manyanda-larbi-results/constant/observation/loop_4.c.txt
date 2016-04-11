@@ -1,0 +1,2 @@
+tests/observation/loop_4.c:7.8-17: [ x in top ]
+tests/observation/loop_4.c:11.4-13: [ x in top ]

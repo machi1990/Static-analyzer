@@ -1,0 +1,3 @@
+tests/0406_loop_limit.c:7.2-11  BOTTOM: [ x in top ]
+tests/0406_loop_limit.c:7.2-11  FALSE: [ x in top ]
+tests/0406_loop_limit.c:7.2-11  TRUE: [ x in top ]

@@ -1,0 +1,4 @@
+tests/0304_assert_rel.c:6.9-13: ERROR: Assertion error.
+tests/0304_assert_rel.c:7.2-13  BOTTOM: [ x in top, y in top ]
+tests/0304_assert_rel.c:7.2-13  FALSE: [ x in {3}, y in {3} ]
+tests/0304_assert_rel.c:7.2-13  TRUE: [ x in {1}, y in {1} ]

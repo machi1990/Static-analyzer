@@ -1,0 +1,1 @@
+tests/0106_if_two.c:6.2-13: [ x in Impair [1;1], y in Impair [1;3] ]

@@ -1,0 +1,3 @@
+tests/0109_if_rel.c:7.2-13  BOTTOM: [ x in top, y in top ]
+tests/0109_if_rel.c:7.2-13  FALSE: [ x in top, y in top ]
+tests/0109_if_rel.c:7.2-13  TRUE: [ x in top, y in top ]

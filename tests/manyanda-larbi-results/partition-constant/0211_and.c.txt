@@ -1,0 +1,2 @@
+tests/0211_and.c:6.24-35  BOTTOM: [ x in top, y in top ]
+tests/0211_and.c:7.9-20  BOTTOM: [ x in top, y in top ]

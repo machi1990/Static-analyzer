@@ -1,0 +1,2 @@
+tests/0007_print.c:6.2-13  BOTTOM: [ x in {12}, y in {15} ]
+tests/0007_print.c:9.2-13  BOTTOM: [ x in {0}, y in {9} ]

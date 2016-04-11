@@ -1,0 +1,2 @@
+tests/0007_print.c:6.2-13: [ x in Pair , y in Impair  ]
+tests/0007_print.c:9.2-13: [ x in Pair , y in Impair  ]

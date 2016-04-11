@@ -1,0 +1,2 @@
+tests/observation/true_1.c:9.8-17  BOTTOM: [ a in [7;9] ]
+tests/observation/true_1.c:11.8-18  BOTTOM: [ b in [10;10] ]

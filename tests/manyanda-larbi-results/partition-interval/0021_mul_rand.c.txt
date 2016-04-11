@@ -1,0 +1,1 @@
+tests/0021_mul_rand.c:4.2-11  BOTTOM: [ x in [10;40] ]

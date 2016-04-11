@@ -1,0 +1,1 @@
+tests/0206_cmp_eq.c:6.14-25  BOTTOM: bottom

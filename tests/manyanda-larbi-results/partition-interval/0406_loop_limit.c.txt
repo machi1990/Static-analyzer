@@ -1,0 +1,3 @@
+tests/0406_loop_limit.c:7.2-11  BOTTOM: [ x in [3;+inf] ]
+tests/0406_loop_limit.c:7.2-11  FALSE: [ x in [3;+inf] ]
+tests/0406_loop_limit.c:7.2-11  TRUE: [ x in [3;+inf] ]

@@ -1,0 +1,4 @@
+tests/observation/loop_4.c:7.8-17: [ x in Top [1;50] ]
+tests/observation/loop_4.c:7.8-17: [ x in Top [0;49] ]
+tests/observation/loop_4.c:7.8-17: [ x in Top [0;48] ]
+tests/observation/loop_4.c:11.4-13: [ x in Impair [-1;-1] ]

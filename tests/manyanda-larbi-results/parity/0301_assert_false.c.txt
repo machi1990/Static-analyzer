@@ -1,0 +1,2 @@
+tests/0301_assert_false.c:4.10-15: ERROR: Assertion error!
+tests/0301_assert_false.c:5.2-11: [ x in Impair  ]

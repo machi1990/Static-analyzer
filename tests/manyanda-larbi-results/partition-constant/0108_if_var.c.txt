@@ -1,0 +1,3 @@
+tests/0108_if_var.c:5.2-11  BOTTOM: [ x in top ]
+tests/0108_if_var.c:5.2-11  FALSE: [ x in top ]
+tests/0108_if_var.c:5.2-11  TRUE: [ x in top ]

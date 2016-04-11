@@ -1,0 +1,2 @@
+tests/0300_assert_true.c:4.9-13: ERROR: Assertion error!
+tests/0300_assert_true.c:5.2-11: [ x in Pair  ]

@@ -1,0 +1,1 @@
+tests/0401_loop_infinite.c:5.4-13: [ x in Pair [0;0] ]

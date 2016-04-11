@@ -1,0 +1,2 @@
+tests/0213_not.c:6.27-38  BOTTOM: [ x in top, y in top ]
+tests/0213_not.c:7.9-20  BOTTOM: [ x in top, y in top ]

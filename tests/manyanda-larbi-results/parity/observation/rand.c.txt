@@ -1,0 +1,2 @@
+tests/observation/rand.c:7.11-16: ERROR: Assertion error!
+tests/observation/rand.c:8.4-13: [ x in Top  ]

@@ -1,0 +1,6 @@
+tests/observation/trace_partition.c:11.12-23: [ x in {11}, y in {11} ]
+tests/observation/trace_partition.c:11.12-23: [ x in {12}, y in {12} ]
+tests/observation/trace_partition.c:11.12-23: [ x in {13}, y in {13} ]
+tests/observation/trace_partition.c:11.12-23: [ x in {14}, y in {14} ]
+tests/observation/trace_partition.c:11.12-23: [ x in top, y in top ]
+tests/observation/trace_partition.c:19.4-15: [ x in top, y in top ]

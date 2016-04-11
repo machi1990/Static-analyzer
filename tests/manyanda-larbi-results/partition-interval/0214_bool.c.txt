@@ -1,0 +1,2 @@
+tests/0214_bool.c:6.42-53  BOTTOM: [ x in [10;20], y in [10;20] ]
+tests/0214_bool.c:7.9-20  BOTTOM: [ x in [10;20], y in [10;20] ]
