@@ -1,7 +1,7 @@
 (*
   Cours "Typage et Analyse Statique"
   Université Pierre et Marie Curie
-	Author: Manyanda Chitimbo �2016
+	Author: Manyanda Chitimbo �2016
   Original author: Antoine Miné 2015
 *)
 
@@ -71,7 +71,10 @@ module Parity = (struct
 		
   let modulo  = sub  
 	
-  let div a b = TOP
+  let div a b = match a,b with
+	| PAIR,PAIR -> PAIR
+	| BOT,BOT -> BOT
+	| _ -> TOP
 
   (* set-theoretic operations *)
   
