@@ -181,7 +181,7 @@ module Interprete(D : DOMAIN) =
 							if !narrowing <= 0 then widened
 							else (
 									narrowing := !narrowing - 1;
-									D.narrow x widened 
+									D.narrow widened (eval_stat (filter widened e true) s)
 							)
 					else (
 						delay := !delay - 1;
