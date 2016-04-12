@@ -155,8 +155,7 @@ module Trace_Interprete(D : DOMAIN) =
         else (
 					let minus_1 x = if x > 0 then x-1 else 0 in  
 					let unroll = minus_1 unroll and
-							delay = minus_1 delay and
-							narrowing = minus_1 narrowing in
+							delay = minus_1 delay in
 					fix f fx delay unroll narrowing
 					)
       in
@@ -168,7 +167,11 @@ module Trace_Interprete(D : DOMAIN) =
 							if delay = 0 then 
     						let widened = PATH.map (fun m -> D.widen x m) evaluated in
     						if narrowing = 0 then widened else (
-    							PATH.mapi (fun k v -> D.narrow v (find k widened)) evaluated
+									let to_narrow = ref widened in 
+									for i = 0  to narrowing do 
+										to_narrow := (eval_stat_paths ( PATH.add key (filter (fold !to_narrow) e true) PATH.empty) s) 
+									done;
+    							PATH.mapi (fun k v -> D.narrow v (find k !to_narrow)) widened;
     						) else (
       					PATH.map (fun m -> D.join x m) evaluated )) 
     					else ( 
