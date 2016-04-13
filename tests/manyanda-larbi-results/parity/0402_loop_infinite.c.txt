@@ -1,4 +1,0 @@
-tests/0402_loop_infinite.c:5.4-13: [ x in Pair  ]
-tests/0402_loop_infinite.c:5.4-13: [ x in Impair  ]
-tests/0402_loop_infinite.c:5.4-13: [ x in Pair  ]
-tests/0402_loop_infinite.c:5.4-13: [ x in Impair  ]

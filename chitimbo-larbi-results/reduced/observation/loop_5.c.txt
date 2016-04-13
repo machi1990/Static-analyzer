@@ -1,0 +1,8 @@
+tests/observation/loop_5.c:7.8-17: [ x in Pair [50;50] ]
+tests/observation/loop_5.c:7.8-17: [ x in Impair [49;49] ]
+tests/observation/loop_5.c:7.8-17: [ x in Pair [48;48] ]
+tests/observation/loop_5.c:7.8-17: [ x in Impair [47;47] ]
+tests/observation/loop_5.c:7.8-17: [ x in Impair [1;47] ]
+tests/observation/loop_5.c:7.8-17: [ x in Impair [1;47] ]
+tests/observation/loop_5.c:7.8-17: [ x in Impair [1;47] ]
+tests/observation/loop_5.c:11.4-13: [ x in Impair [-inf;0] ]

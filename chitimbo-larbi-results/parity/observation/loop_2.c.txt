@@ -1,0 +1,6 @@
+tests/observation/loop_2.c:21.8-19: [ x in Impair , y in Impair  ]
+tests/observation/loop_2.c:21.8-19: [ x in Pair , y in Pair  ]
+tests/observation/loop_2.c:21.8-19: [ x in Impair , y in Impair  ]
+tests/observation/loop_2.c:21.8-19: [ x in Pair , y in Pair  ]
+tests/observation/loop_2.c:21.8-19: [ x in Pair , y in Pair  ]
+tests/observation/loop_2.c:24.4-15: [ x in Impair , y in Impair  ]

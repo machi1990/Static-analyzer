@@ -1,0 +1,7 @@
+tests/0400_loop.c:5.4-13: [ x in {0} ]
+tests/0400_loop.c:5.4-13: [ x in {1} ]
+tests/0400_loop.c:5.4-13: [ x in {2} ]
+tests/0400_loop.c:5.4-13: [ x in {3} ]
+tests/0400_loop.c:5.4-13: [ x in top ]
+tests/0400_loop.c:5.4-13: [ x in top ]
+tests/0400_loop.c:9.2-11: [ x in top ]

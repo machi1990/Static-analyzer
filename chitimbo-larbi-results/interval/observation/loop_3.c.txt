@@ -1,0 +1,7 @@
+tests/observation/loop_3.c:7.8-17: [ x in [0;0] ]
+tests/observation/loop_3.c:7.8-17: [ x in [1;1] ]
+tests/observation/loop_3.c:7.8-17: [ x in [2;2] ]
+tests/observation/loop_3.c:7.8-17: [ x in [3;3] ]
+tests/observation/loop_3.c:7.8-17: [ x in [3;64] ]
+tests/observation/loop_3.c:7.8-17: [ x in [3;64] ]
+tests/observation/loop_3.c:11.4-13: [ x in [65;65] ]

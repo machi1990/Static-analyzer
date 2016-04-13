@@ -78,8 +78,11 @@ l'utilisation tardive de "widening" normallement aprés "N" iteration, et "unrol
 pour l'evaluation de la boucle normale "sans faire de joining de widen" pour les "N"
 premier iterations. Ce deuxieme nous apporte une bonne précision par rapport à delay,
 vue qu'il s'agit d'une "simulation" d'evaluation la boucle dans le domaine, et ainsi
-la boucle est exécuté avec les valeur précises. Par example, pour le fichier
-"tests/observation/loop_3.c", nous avons , pour unroll=3 et delay= 0 le résultat suivant:
+la boucle est exécuté avec les valeur précises. 
+
+Par example, pour le fichier "tests/observation/loop_3.c", nous avons pour unroll=3
+et delay= 0 le résultat suivant:
+
 tests/observation/loop_3.c:7.8-17: [ x in [0;0] ]
 tests/observation/loop_3.c:7.8-17: [ x in [1;1] ]
 tests/observation/loop_3.c:7.8-17: [ x in [2;2] ]
@@ -102,8 +105,23 @@ de forcer la convergence en temps fini) après l'utilisation de widening. Pour c
 avons ajouté l'option "-narrow N". Cette option fera n iteration de la boucle en
 appliquant l'operation de narrowing à chaque tour de boucle.
 
-NB: Vue quelques imprécesion remarquées lors de nos tests, cette partie (de narrowing) est 
-	encore en revue totale. 
+Pour ce meme exemple, nous avons le résultat suivant en appliquant l'option de narrowing,
+avec un unroll de 3 et delay de 0.
+tests/observation/loop_3.c:7.8-17: [ x in [0;0] ]
+tests/observation/loop_3.c:7.8-17: [ x in [1;1] ]
+tests/observation/loop_3.c:7.8-17: [ x in [2;2] ]
+tests/observation/loop_3.c:7.8-17: [ x in [3;3] ]
+tests/observation/loop_3.c:7.8-17: [ x in [3;64] ]
+tests/observation/loop_3.c:7.8-17: [ x in [3;64] ]
+tests/observation/loop_3.c:11.4-13: [ x in [65;65] ]
+
+NB: 
+Vue quelques imprécesion remarquées lors de nos tests, cette partie est encore sous une revue
+totale. Par example, à la fin d'analyse du programme "tests/observation/loop_5.c",nous avons,
+toujours avec unroll 3 et narrowing 1, nous avons en sortie de la boucle la valeur de x dans
+[0;47]. Cette résulat est assez imprécis comparant au vrai résulat qui est [0;0]. Nous estimons 
+que cette imprecision  peut être lié à notre application de narrowing.   
+	
 
 3.5: Produit reduit
 ===================

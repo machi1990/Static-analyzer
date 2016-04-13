@@ -1,6 +1,0 @@
-tests/0404_loop_rel.c:7.4-15: [ x in {0}, N in top ]
-tests/0404_loop_rel.c:7.4-15: [ x in {1}, N in top ]
-tests/0404_loop_rel.c:7.4-15: [ x in {2}, N in top ]
-tests/0404_loop_rel.c:7.4-15: [ x in {3}, N in top ]
-tests/0404_loop_rel.c:7.4-15: [ x in top, N in top ]
-tests/0404_loop_rel.c:10.9-13: ERROR: Assertion error!

@@ -1,0 +1,8 @@
+tests/observation/loop_2.c:21.8-19: [ x in [1;1], y in [1;1] ]
+tests/observation/loop_2.c:21.8-19: [ x in [2;2], y in [2;2] ]
+tests/observation/loop_2.c:21.8-19: [ x in [3;3], y in [3;3] ]
+tests/observation/loop_2.c:21.8-19: [ x in [4;4], y in [4;4] ]
+tests/observation/loop_2.c:21.8-19: [ x in [4;+inf], y in [2;+inf] ]
+tests/observation/loop_2.c:21.8-19: [ x in [4;+inf], y in [2;+inf] ]
+tests/observation/loop_2.c:21.8-19: [ x in [4;+inf], y in [0;+inf] ]
+tests/observation/loop_2.c:24.4-15: [ x in [3;+inf], y in [-inf;+inf] ]

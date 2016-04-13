@@ -1,5 +1,0 @@
-tests/0402_loop_infinite.c:5.4-13  BOTTOM: [ x in [0;0] ]
-tests/0402_loop_infinite.c:5.4-13  BOTTOM: [ x in [-1;-1] ]
-tests/0402_loop_infinite.c:5.4-13  BOTTOM: [ x in [-2;-2] ]
-tests/0402_loop_infinite.c:5.4-13  BOTTOM: [ x in [-3;-3] ]
-tests/0402_loop_infinite.c:5.4-13  BOTTOM: [ x in [-inf;-3] ]
