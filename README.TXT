@@ -2,33 +2,32 @@ EXPLANATION DE NOS OBSERVATION, RESULTATS ET IMPLEMENTATION.
 ============================================================
 
 Le dossier "tests/observation" contient quelques tests que nous avons écrit au
-fur et mésur de notre implementation.
+fur et à mesure de notre implementation.
 
-Pour génerer le fichier résultat de tout le banc de tests exécuter le script
-"run.sh". Pour ce faire, il faut d'abord vérifier que toutes dependances comme
-indiquées dans le fichie INSTALL.txt soient satisfaites.
+Pour génerer le fichier résultat de tout le banc de tests, il faut exécuter le script
+"run.sh". Pour ce faire, il faut d'abord vérifier que toutes les dependances spécifiées dans le fichier INSTALL.txt soient satisfaites.
 
 Sous terminal d'UNIX, la commande "bash run.sh -h", vous proposera une guide
 d'utilisation.
 
-Les résultats de notre analyse se trouve dans le dossir "tests/manyanda-larbi-results".
+Les résultats de notre analyse se trouvent dans le dossir "tests/manyanda-larbi-results".
 
 3.1.1. OBSERVATION
 =================
-    1) L'instruction rand(l,h) genere une suite de d'entiers entre l et h si l
+    1) L'instruction rand(l,h) génère une suite d'entiers entre l et h si l
     est inferieur ou égal à h. L'interpreteur nous envoie bien la liste d'entiers
     dans le cas où  l est inferieur à h. Dans le cas contraire , il nous envoie
     "bottom" signalant un problème dans l'interpretation.
 
-    2) Le program s'arrete dans deux conditions.
+    2) Le programme s'arrête sous deux conditions :
         (a). Le cas trivial, l'exécution du programme est terminé en arrivant à la
-        fin du programem. Dans ce cas le résultat énvoyé sera l'evaluation du
-        programme dans en suivant le semantique de langage: résulat attendu.
+        fin du programme. Dans ce cas, le résultat envoyé sera l'évaluation du
+        programme en suivant la sémantique du langage: le résulat attendu.
 
-        (b). Le deuxième cas, c'est quand on evalue l'instruction "halt".
+        (b). Le second cas, càd lorsqu'on evalue l'instruction "halt".
         Dans ce cas nous aurons "bottom" comme résulat de l'interpretation.
 
-    3) Oui, si un programme comporte une boucle infinie l'interprete peut se
+    3) Oui, si un programme comporte une boucle infinie l'interprète peut se
     términer. Cela arrive quand nous avons reussi à trouver un point fixe existe.
 
 
@@ -38,7 +37,7 @@ L'implementation est faite dans le fichier interpreter.ml.
 
 3.1.3: Enrichement
 ==================
-Nous avons choisi d'implementer le modulo. Pour ainsi faire, Nous nous sommes
+Nous avons choisi d'implementer le modulo. Pour ce faire, Nous nous sommes
 servi de la function "erem" du package Zarith. Nous avons aussi écrit des fichiers
 du test préfixé par "modulo", pour ensuite tester notre implementation.
 
