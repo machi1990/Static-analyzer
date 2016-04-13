@@ -1,0 +1,5 @@
+tests/observation/division.c:11.8-17  BOTTOM: bottom
+tests/observation/division.c:14.8-17  BOTTOM: [ z in top ]
+tests/observation/division.c:17.4-13  BOTTOM: [ z in top ]
+tests/observation/division.c:17.4-13  FALSE: [ z in top ]
+tests/observation/division.c:17.4-13  TRUE: bottom

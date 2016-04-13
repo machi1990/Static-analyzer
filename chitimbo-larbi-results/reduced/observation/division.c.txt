@@ -1,0 +1,3 @@
+tests/observation/division.c:11.8-17: bottom
+tests/observation/division.c:14.8-17: [ z in Top [-4;4] ]
+tests/observation/division.c:17.4-13: [ z in Top [-4;4] ]
