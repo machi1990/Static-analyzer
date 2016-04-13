@@ -1,6 +1,0 @@
-tests/observation/partition.c:11.4-13  BOTTOM: [ x in [-25;70] ]
-tests/observation/partition.c:11.4-13  FALSE: [ x in [15;70] ]
-tests/observation/partition.c:11.4-13  TRUE: [ x in [-25;-10] ]
-tests/observation/partition.c:17.4-13  BOTTOM: [ x in [50;50] ]
-tests/observation/partition.c:17.4-13  FALSE: [ x in [50;50] ]
-tests/observation/partition.c:17.4-13  TRUE: [ x in [50;+inf] ]

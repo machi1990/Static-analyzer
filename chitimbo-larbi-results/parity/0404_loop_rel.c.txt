@@ -1,0 +1,6 @@
+tests/0404_loop_rel.c:7.4-15: [ x in Pair , N in Top  ]
+tests/0404_loop_rel.c:7.4-15: [ x in Impair , N in Top  ]
+tests/0404_loop_rel.c:7.4-15: [ x in Pair , N in Top  ]
+tests/0404_loop_rel.c:7.4-15: [ x in Impair , N in Top  ]
+tests/0404_loop_rel.c:7.4-15: [ x in Impair , N in Top  ]
+tests/0404_loop_rel.c:10.9-13: ERROR: Assertion error!

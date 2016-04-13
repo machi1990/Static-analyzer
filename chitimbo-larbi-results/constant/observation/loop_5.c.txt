@@ -1,0 +1,7 @@
+tests/observation/loop_5.c:7.8-17: [ x in {50} ]
+tests/observation/loop_5.c:7.8-17: [ x in {49} ]
+tests/observation/loop_5.c:7.8-17: [ x in {48} ]
+tests/observation/loop_5.c:7.8-17: [ x in {47} ]
+tests/observation/loop_5.c:7.8-17: [ x in top ]
+tests/observation/loop_5.c:7.8-17: [ x in top ]
+tests/observation/loop_5.c:11.4-13: [ x in top ]
