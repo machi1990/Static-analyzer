@@ -11,7 +11,7 @@ indiquées dans le fichie INSTALL.txt soient satisfaites.
 Sous terminal d'UNIX, la commande "bash run.sh -h", vous proposera une guide
 d'utilisation.
 
-Les résultats de notre analyse se trouve dans le dossir "tests/manyanda-larbi-results".
+Les résultats de notre analyse se trouve dans le dossir "chitimbo-larbi-results".
 
 3.1.1. OBSERVATION
 =================
